@@ -1,3 +1,4 @@
+import os
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm.session import sessionmaker
 
@@ -12,4 +13,4 @@ class Conexion:
     def __del__(self):
         self.__sesion.close()
         
-conexion = Conexion()
+conexion = Conexion(os.environ['DATABASE_ENV'])
