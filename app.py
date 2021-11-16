@@ -8,8 +8,8 @@ api = Api(app)
 
 producto_model = api.model('Producto', {
     'id': fields.Integer,
-    'nombre_producto': fields.String,
-    # 'precio': fields.Integer,
+    'nombre': fields.String,
+    'precio': fields.Integer,
     'uri': fields.Url('producto_ep')
 })
 vendedor_model = api.model('Vendedor', {
