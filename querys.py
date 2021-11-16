@@ -8,7 +8,7 @@ def commit_after(data_function):
     @functools.wraps(data_function)
     def wrapper(*args):
         data_function(*args)
-        # sesion.commit()
+        conexion.sesion.commit()
     return wrapper
 
 class RecursoServicio(ABC):
