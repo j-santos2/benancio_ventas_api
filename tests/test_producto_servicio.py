@@ -3,7 +3,7 @@ import string
 import unittest
 
 from conexion import conexion
-from modelos import Producto
+from src.modelos import Producto
 from querys import producto
 
 

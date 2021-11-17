@@ -1,7 +1,7 @@
 import unittest
 
 from conexion import conexion
-from modelos import Venta, Producto, Vendedor, Sucursal
+from src.modelos import Venta, Producto, Vendedor, Sucursal
 from querys import venta
 
 class Test_VentasServicio(unittest.TestCase):

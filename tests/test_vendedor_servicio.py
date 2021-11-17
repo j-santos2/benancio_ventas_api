@@ -5,7 +5,7 @@ import unittest
 from sqlalchemy import func
 
 from conexion import conexion
-from modelos import Vendedor, Sucursal
+from src.modelos import Vendedor, Sucursal
 from querys import vendedor
 
 class Test_VendedorServicio(unittest.TestCase):

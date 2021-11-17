@@ -3,7 +3,7 @@ import string
 import unittest
 
 from conexion import conexion
-from modelos import Sucursal
+from src.modelos import Sucursal
 from querys import sucursal
 
 
