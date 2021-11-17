@@ -4,7 +4,7 @@ import unittest
 
 from conexion import conexion
 from src.modelos import Producto
-from querys import producto
+from src.servicios import producto
 
 
 class Test_ProductoServicio(unittest.TestCase):

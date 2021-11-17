@@ -6,7 +6,7 @@ from sqlalchemy import func
 
 from conexion import conexion
 from src.modelos import Vendedor, Sucursal
-from querys import vendedor
+from src.servicios import vendedor
 
 class Test_VendedorServicio(unittest.TestCase):
     def setUp(self):

@@ -4,7 +4,7 @@ import unittest
 
 from conexion import conexion
 from src.modelos import Sucursal
-from querys import sucursal
+from src.servicios import sucursal
 
 
 class Test_SucursalServicio(unittest.TestCase):
