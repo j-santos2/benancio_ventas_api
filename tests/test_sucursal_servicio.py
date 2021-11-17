@@ -1,9 +1,24 @@
-import unittest
-from querys import sucursal
-from random import choices
+from random import choices, randint
 import string
+import unittest
+
+from conexion import conexion
+from modelos import Sucursal
+from querys import sucursal
+
 
 class Test_SucursalServicio(unittest.TestCase):
+
+    def setUp(self):
+        conexion.sesion.add(Sucursal(nombre="1ª sucursal"))
+        conexion.sesion.add(Sucursal(nombre="2ª sucursal"))
+        conexion.sesion.add(Sucursal(nombre="3ª sucursal"))
+        conexion.sesion.add(Sucursal(nombre="4ª sucursal"))
+        conexion.sesion.add(Sucursal(nombre="5ª sucursal"))
+
+    def tearDown(self):
+        conexion.sesion.query(Sucursal).delete()
+
     def test_sucursal_obtener_todos_retorna_lista_con_objetos_con_id_nombre(self):
         resultado = sucursal.obtener_todos()
         self.assertTrue(isinstance(resultado[0].id, int))
