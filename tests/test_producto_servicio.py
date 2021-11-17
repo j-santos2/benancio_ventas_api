@@ -1,9 +1,23 @@
-import unittest
-from querys import producto
 from random import choices, randint
 import string
+import unittest
+
+from conexion import conexion
+from modelos import Producto
+from querys import producto
+
 
 class Test_ProductoServicio(unittest.TestCase):
+
+    def setUp(self):
+        conexion.sesion.add(Producto(nombre="1º producto", precio=10000))
+        conexion.sesion.add(Producto(nombre="2º producto", precio=20000))
+        conexion.sesion.add(Producto(nombre="3º producto", precio=30000))
+        conexion.sesion.add(Producto(nombre="4º producto", precio=40000))
+        conexion.sesion.add(Producto(nombre="5º producto", precio=50000))
+
+    def tearDown(self):
+        conexion.sesion.query(Producto).delete()
 
     def test_producto_obtener_todos_retorna_lista_con_objetos_con_id_nombre_precio(self):
         resultado = producto.obtener_todos()
