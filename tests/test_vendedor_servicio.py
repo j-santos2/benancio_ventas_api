@@ -1,9 +1,33 @@
-import unittest
-from querys import vendedor
-from random import choices
+from random import choices, randint
 import string
+import unittest
+
+from sqlalchemy import func
+
+from conexion import conexion
+from modelos import Vendedor, Sucursal
+from querys import vendedor
 
 class Test_VendedorServicio(unittest.TestCase):
+    def setUp(self):
+        primera_sucursal = Sucursal(nombre = "Primera sucursal")
+        conexion.sesion.add(primera_sucursal)
+
+        segunda_sucursal = Sucursal(nombre = "Segunda sucursal")
+        conexion.sesion.add(segunda_sucursal)
+
+        conexion.sesion.commit()
+        
+        conexion.sesion.add(Vendedor(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id))
+        conexion.sesion.add(Vendedor(nombre="2º", apellido="vendedor", sucursal_id=primera_sucursal.id))
+        conexion.sesion.add(Vendedor(nombre="3º", apellido="vendedor", sucursal_id=primera_sucursal.id))
+        conexion.sesion.add(Vendedor(nombre="4º", apellido="vendedor", sucursal_id=segunda_sucursal.id))
+        conexion.sesion.add(Vendedor(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id))
+
+    def tearDown(self):
+        conexion.sesion.query(Vendedor).delete()
+        conexion.sesion.query(Sucursal).delete()
+    
     def test_vendedor_obtener_todos_retorna_lista_con_objetos_con_id_nombre_apellido_sucursal_id(self):
         resultado = vendedor.obtener_todos()
         self.assertTrue(isinstance(resultado[0].id, int))
