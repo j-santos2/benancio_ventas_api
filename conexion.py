@@ -4,8 +4,14 @@ from sqlalchemy.orm.session import sessionmaker
 
 class Conexion:
     def __init__(self, connectionstr):
-        Sesion = sessionmaker(bind = create_engine(connectionstr))
+        self.__engine = create_engine(connectionstr)
+        Sesion = sessionmaker(bind = self.__engine)
         self.__sesion = Sesion()
+
+    @property
+    def engine(self):
+        return self.__engine
+    
     @property
     def sesion(self):
         return self.__sesion
