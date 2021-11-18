@@ -39,8 +39,7 @@ class Productos(Resource):
     @api.expect(producto_model)
     @api.marshal_with(producto_model, code=201)
     def post(self):
-        respuesta = api.payload
-        respuesta['id'] = 34
+        respuesta = producto.insertar(api.payload['nombre'], api.payload['precio'])
         return respuesta, 201
 
 class Producto(Resource):
