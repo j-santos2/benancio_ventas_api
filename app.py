@@ -7,10 +7,10 @@ app = Flask(__name__)
 api = Api(app, version='1.0', title='Benancio Ventas API', description='La API Rest de Benancio Ventas')
 
 producto_model = api.model('Producto', {
-    'id': fields.Integer,
+    'id': fields.Integer(readonly=True, description='El identificador único del producto'),
     'nombre': fields.String,
     'precio': fields.Integer,
-    'uri': fields.Url('producto_ep')
+    'uri': fields.Url('producto_ep', readonly=True)
 })
 vendedor_model = api.model('Vendedor', {
     'id': fields.Integer,
@@ -35,6 +35,13 @@ class Productos(Resource):
     @api.marshal_with(producto_model)
     def get(self):
         return producto.obtener_todos()
+
+    @api.expect(producto_model)
+    @api.marshal_with(producto_model, code=201)
+    def post(self):
+        respuesta = api.payload
+        respuesta['id'] = 34
+        return respuesta, 201
 
 class Producto(Resource):
     @api.marshal_with(producto_model)

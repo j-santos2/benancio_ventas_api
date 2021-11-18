@@ -41,6 +41,11 @@ class Test_ProductoServicio(unittest.TestCase):
         self.assertEqual(nombre_rnd, productos[-1].nombre)
         self.assertEqual(precio_rnd, productos[-1].precio)
 
+    def test_producto_insertado_tiene_id_distinto_de_none(self):        
+        producto_nuevo = producto.insertar('Producto con ID', 1000)
+
+        self.assertIsNotNone(producto_nuevo.id)
+
     def test_producto_actualizar_ultimo_id_nombre_precio_ultimo_producto_tiene_valores_nuevos(self):
         nombre_rnd = ''.join(choices(string.ascii_lowercase, k=5))
         precio_rnd = randint(100,300)

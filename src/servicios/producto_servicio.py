@@ -17,7 +17,10 @@ class ProductoServicio(RecursoServicio):
 
     @commit_after
     def insertar(self, nombre, precio):
-        self._sesion.add(Producto(nombre = nombre,precio = precio))
+        producto_nuevo = Producto(nombre = nombre,precio = precio)
+        self._sesion.add(producto_nuevo)
+        
+        return producto_nuevo 
 
     @commit_after
     def actualizar(self, id, nombre, precio):
