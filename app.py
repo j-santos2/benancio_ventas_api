@@ -4,7 +4,7 @@ from flask_restx import Api, Resource, fields
 from src.servicios import producto, vendedor, sucursal, venta
 
 app = Flask(__name__)
-api = Api(app)
+api = Api(app, version='1.0', title='Benancio Ventas API', description='La API Rest de Benancio Ventas')
 
 producto_model = api.model('Producto', {
     'id': fields.Integer,
