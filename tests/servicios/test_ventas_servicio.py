@@ -1,7 +1,7 @@
 import unittest
 
 from conexion import conexion
-from src.modelos import Venta, ProductoModelo, VendedorModelo, SucursalModelo
+from src.modelos import VentaModelo, ProductoModelo, VendedorModelo, SucursalModelo
 from src.servicios import venta
 
 class Test_VentasServicio(unittest.TestCase):
@@ -24,16 +24,16 @@ class Test_VentasServicio(unittest.TestCase):
         
         conexion.sesion.commit()
 
-        conexion.sesion.add(Venta(producto_id=primer_producto.id, vendedor_id=primer_vendedor.id))
-        conexion.sesion.add(Venta(producto_id=segundo_producto.id, vendedor_id=segundo_vendedor.id))
-        conexion.sesion.add(Venta(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
-        conexion.sesion.add(Venta(producto_id=primer_producto.id, vendedor_id=segundo_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=primer_producto.id, vendedor_id=primer_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=segundo_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=primer_producto.id, vendedor_id=segundo_vendedor.id))
 
     def tearDown(self):
         conexion.sesion.query(VendedorModelo).delete()
         conexion.sesion.query(SucursalModelo).delete()
         conexion.sesion.query(ProductoModelo).delete()
-        conexion.sesion.query(Venta).delete()
+        conexion.sesion.query(VentaModelo).delete()
 
     def test_venta_obtener_todos_retorna_lista_con_objetos_con_id_productoid_vendedorid(self):
         resultado = venta.obtener_todos()
