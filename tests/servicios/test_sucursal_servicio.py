@@ -3,21 +3,21 @@ import string
 import unittest
 
 from conexion import conexion
-from src.modelos import Sucursal
+from src.modelos import SucursalModelo
 from src.servicios import sucursal
 
 
 class Test_SucursalServicio(unittest.TestCase):
 
     def setUp(self):
-        conexion.sesion.add(Sucursal(nombre="1ª sucursal"))
-        conexion.sesion.add(Sucursal(nombre="2ª sucursal"))
-        conexion.sesion.add(Sucursal(nombre="3ª sucursal"))
-        conexion.sesion.add(Sucursal(nombre="4ª sucursal"))
-        conexion.sesion.add(Sucursal(nombre="5ª sucursal"))
+        conexion.sesion.add(SucursalModelo(nombre="1ª sucursal"))
+        conexion.sesion.add(SucursalModelo(nombre="2ª sucursal"))
+        conexion.sesion.add(SucursalModelo(nombre="3ª sucursal"))
+        conexion.sesion.add(SucursalModelo(nombre="4ª sucursal"))
+        conexion.sesion.add(SucursalModelo(nombre="5ª sucursal"))
 
     def tearDown(self):
-        conexion.sesion.query(Sucursal).delete()
+        conexion.sesion.query(SucursalModelo).delete()
 
     def test_sucursal_obtener_todos_retorna_lista_con_objetos_con_id_nombre(self):
         resultado = sucursal.obtener_todos()

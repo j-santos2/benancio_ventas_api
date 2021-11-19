@@ -5,15 +5,15 @@ import unittest
 from sqlalchemy import func
 
 from conexion import conexion
-from src.modelos import Vendedor, Sucursal
+from src.modelos import Vendedor, SucursalModelo
 from src.servicios import vendedor
 
 class Test_VendedorServicio(unittest.TestCase):
     def setUp(self):
-        primera_sucursal = Sucursal(nombre = "Primera sucursal")
+        primera_sucursal = SucursalModelo(nombre = "Primera sucursal")
         conexion.sesion.add(primera_sucursal)
 
-        segunda_sucursal = Sucursal(nombre = "Segunda sucursal")
+        segunda_sucursal = SucursalModelo(nombre = "Segunda sucursal")
         conexion.sesion.add(segunda_sucursal)
 
         conexion.sesion.commit()
@@ -26,7 +26,7 @@ class Test_VendedorServicio(unittest.TestCase):
 
     def tearDown(self):
         conexion.sesion.query(Vendedor).delete()
-        conexion.sesion.query(Sucursal).delete()
+        conexion.sesion.query(SucursalModelo).delete()
     
     def test_vendedor_obtener_todos_retorna_lista_con_objetos_con_id_nombre_apellido_sucursal_id(self):
         resultado = vendedor.obtener_todos()

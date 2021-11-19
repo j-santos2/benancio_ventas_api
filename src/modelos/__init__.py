@@ -5,5 +5,5 @@ Base = declarative_base()
 
 from .producto_modelo import ProductoModelo
 from .vendedor_modelo import Vendedor
-from .sucursales_modelo import Sucursal
+from .sucursales_modelo import SucursalModelo
 from .ventas_modelo import Venta

@@ -9,5 +9,5 @@ class Vendedor(Base):
     nombre = Column(String, nullable = False)
     apellido = Column(String, nullable = False)
     sucursal_id = Column(Integer, ForeignKey("sucursales.id"))
-    sucursal = relationship("Sucursal", backref = "vendedor")
+    sucursal = relationship("SucursalModelo", backref = "vendedor")
     
