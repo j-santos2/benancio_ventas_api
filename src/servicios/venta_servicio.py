@@ -12,6 +12,8 @@ class VentaServicio(RecursoServicio):
 
     @commit_after
     def insertar(self, producto_id, vendedor_id):
-        self._sesion.add(VentaModelo(producto_id = producto_id,vendedor_id = vendedor_id))
+        venta_a_insertar = VentaModelo(producto_id = producto_id,vendedor_id = vendedor_id)
+        self._sesion.add(venta_a_insertar)
+        return venta_a_insertar
 
 venta = VentaServicio()
