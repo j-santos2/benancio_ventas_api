@@ -8,5 +8,5 @@ class Venta(Base):
     id = Column(Integer, primary_key=True)
     vendedor_id = Column(Integer, ForeignKey("vendedores.id"))
     producto_id = Column(Integer, ForeignKey("productos.id"))
-    vendedor = relationship("Vendedor", backref = "venta")
+    vendedor = relationship("VendedorModelo", backref = "venta")
     producto = relationship("ProductoModelo", backref = "venta")

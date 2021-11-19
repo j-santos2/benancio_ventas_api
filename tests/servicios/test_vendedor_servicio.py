@@ -5,7 +5,7 @@ import unittest
 from sqlalchemy import func
 
 from conexion import conexion
-from src.modelos import Vendedor, SucursalModelo
+from src.modelos import VendedorModelo, SucursalModelo
 from src.servicios import vendedor
 
 class Test_VendedorServicio(unittest.TestCase):
@@ -18,14 +18,14 @@ class Test_VendedorServicio(unittest.TestCase):
 
         conexion.sesion.commit()
         
-        conexion.sesion.add(Vendedor(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id))
-        conexion.sesion.add(Vendedor(nombre="2º", apellido="vendedor", sucursal_id=primera_sucursal.id))
-        conexion.sesion.add(Vendedor(nombre="3º", apellido="vendedor", sucursal_id=primera_sucursal.id))
-        conexion.sesion.add(Vendedor(nombre="4º", apellido="vendedor", sucursal_id=segunda_sucursal.id))
-        conexion.sesion.add(Vendedor(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="2º", apellido="vendedor", sucursal_id=primera_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="3º", apellido="vendedor", sucursal_id=primera_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="4º", apellido="vendedor", sucursal_id=segunda_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id))
 
     def tearDown(self):
-        conexion.sesion.query(Vendedor).delete()
+        conexion.sesion.query(VendedorModelo).delete()
         conexion.sesion.query(SucursalModelo).delete()
     
     def test_vendedor_obtener_todos_retorna_lista_con_objetos_con_id_nombre_apellido_sucursal_id(self):

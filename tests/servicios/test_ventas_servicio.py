@@ -1,7 +1,7 @@
 import unittest
 
 from conexion import conexion
-from src.modelos import Venta, ProductoModelo, Vendedor, SucursalModelo
+from src.modelos import Venta, ProductoModelo, VendedorModelo, SucursalModelo
 from src.servicios import venta
 
 class Test_VentasServicio(unittest.TestCase):
@@ -12,8 +12,8 @@ class Test_VentasServicio(unittest.TestCase):
         conexion.sesion.add(segunda_sucursal)
         conexion.sesion.commit()
         
-        primer_vendedor = Vendedor(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id)
-        segundo_vendedor = Vendedor(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id)
+        primer_vendedor = VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id)
+        segundo_vendedor = VendedorModelo(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id)
         conexion.sesion.add(primer_vendedor)
         conexion.sesion.add(segundo_vendedor)
 
@@ -30,7 +30,7 @@ class Test_VentasServicio(unittest.TestCase):
         conexion.sesion.add(Venta(producto_id=primer_producto.id, vendedor_id=segundo_vendedor.id))
 
     def tearDown(self):
-        conexion.sesion.query(Vendedor).delete()
+        conexion.sesion.query(VendedorModelo).delete()
         conexion.sesion.query(SucursalModelo).delete()
         conexion.sesion.query(ProductoModelo).delete()
         conexion.sesion.query(Venta).delete()
