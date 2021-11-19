@@ -91,14 +91,23 @@ class Test_RecursoProducto(unittest.TestCase):
         self.assertEqual("{\"Mensaje\":\"Producto con id 60 no existe\"}", response.data.decode("utf-8"))
         self.assertEqual(204, response.status_code)
 
-    def test_endpoint_productos_delete_id_2_retorna_mensaje_producto_id_2_eliminado_con_exito(self):
-        response = self.app.delete('/productos/2')
+    def test_endpoint_productos_delete_id_retorna_mensaje_producto_id_2_eliminado_con_exito(self):
+        nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
+        conexion.sesion.add(nuevo_producto)        
+        conexion.sesion.commit()
+        
+        response = self.app.delete(f'/productos/{nuevo_producto.id}')
 
-        self.assertEqual("{\"Mensaje\":\"Producto con id 2 eliminado con exito\"}", response.data.decode("utf-8"))
+        respuesta = json.loads(response.data.decode("utf-8"))
+
+        self.assertEqual({"Mensaje":"Producto con id "+ str(nuevo_producto.id) +" eliminado con exito"}, respuesta)
         self.assertEqual(200, response.status_code)
 
-    def test_endpoint_productos_delete_id_60_retorna_mensaje_producto_id_60_no_existe(self):
-        response = self.app.delete('/productos/2')
+    def test_endpoint_productos_delete_id_9000_retorna_mensaje_producto_id_60_no_existe(self):
+        response = self.app.delete('/productos/9000')
 
-        self.assertEqual("{\"Mensaje\":\"Producto con id 60 no existe\"}", response.data.decode("utf-8"))
-        self.assertEqual(204, response.status_code)
+        respuesta = json.loads(response.data.decode("utf-8"))
+
+
+        self.assertEqual({"Mensaje":"Producto con id 9000 no existe"}, respuesta)
+        self.assertEqual(200, response.status_code)

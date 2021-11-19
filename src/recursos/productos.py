@@ -31,3 +31,10 @@ class Producto(Resource):
     def put(self, id):
         respuesta = producto.actualizar(id, api.payload['nombre'], api.payload['precio'])
         return respuesta, 200
+
+    def delete(self, id):
+        try:
+            producto.eliminar(id)
+            return {"Mensaje":f"Producto con id {id} eliminado con exito"}, 200
+        except Exception as e:
+            return {"Mensaje":str(e)}

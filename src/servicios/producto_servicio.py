@@ -34,7 +34,7 @@ class ProductoServicio(RecursoServicio):
     def eliminar(self, id):
         elemento = self._sesion.get(ProductoModelo, id)
         if elemento == None:
-            raise Exception("Registro no encontrado")
+            raise Exception(f"Producto con id {id} no existe")
         self._sesion.delete(elemento)
 
 producto = ProductoServicio()
