@@ -6,7 +6,7 @@ from src import app, api
 api.add_resource(Productos, '/productos', endpoint = 'productos_ep')
 api.add_resource(Producto, '/productos/<int:id>', endpoint = 'producto_ep')
 
-api.add_resource(Vendedores, '/vendedores/', endpoint = 'vendedores_ep')
+api.add_resource(Vendedores, '/vendedores', endpoint = 'vendedores_ep')
 api.add_resource(Vendedor, '/vendedores/<int:id>', endpoint = 'vendedor_ep')
 
 api.add_resource(Sucursales, '/sucursales', endpoint = 'sucursales_ep')

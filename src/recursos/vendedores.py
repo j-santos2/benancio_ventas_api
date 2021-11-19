@@ -16,6 +16,12 @@ class Vendedores(Resource):
     def get(self):
         return vendedor.obtener_todos()
 
+    @api.expect(vendedor_model)
+    @api.marshal_with(vendedor_model, code=201)
+    def post(self):
+        respuesta = vendedor.insertar(api.payload['nombre'], api.payload['apellido'], api.payload['sucursal_id'])
+        return respuesta, 201
+
 class Vendedor(Resource):
     @api.marshal_with(vendedor_model)
     def get(self, id):

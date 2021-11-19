@@ -12,7 +12,10 @@ class VendedorServicio(RecursoServicio):
 
     @commit_after
     def insertar(self, nombre, apellido, sucursal_id):
-        self._sesion.add(VendedorModelo(nombre = nombre,apellido = apellido, sucursal_id = sucursal_id))
+        vendedor_nuevo = VendedorModelo(nombre = nombre,apellido = apellido, sucursal_id = sucursal_id)
+        self._sesion.add(vendedor_nuevo)
+
+        return vendedor_nuevo
 
     @commit_after
     def actualizar(self, id, nombre, apellido, sucursal_id):
