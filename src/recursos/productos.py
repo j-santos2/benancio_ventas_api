@@ -25,3 +25,9 @@ class Producto(Resource):
     @api.marshal_with(producto_model)
     def get(self, id):
         return producto.obtener_uno(id)
+
+    @api.expect(producto_model)
+    @api.marshal_with(producto_model, code=200)
+    def put(self, id):
+        respuesta = producto.actualizar(id, api.payload['nombre'], api.payload['precio'])
+        return respuesta, 200

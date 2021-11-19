@@ -24,8 +24,12 @@ class ProductoServicio(RecursoServicio):
 
     @commit_after
     def actualizar(self, id, nombre, precio):
-        self._sesion.query(ProductoModelo).filter(ProductoModelo.id == id).update({"nombre" : nombre, "precio" : precio})
-    
+        producto_a_actualizar = self._sesion.query(ProductoModelo).filter(ProductoModelo.id == id).first()
+        producto_a_actualizar.nombre = nombre
+        producto_a_actualizar.precio = precio
+
+        return producto_a_actualizar
+
     @commit_after
     def eliminar(self, id):
         elemento = self._sesion.get(ProductoModelo, id)

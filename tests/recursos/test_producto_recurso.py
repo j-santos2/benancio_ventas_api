@@ -63,15 +63,19 @@ class Test_RecursoProducto(unittest.TestCase):
         self.assertEqual(nuevo_producto["precio"], response_json["precio"])
         self.assertEqual(201, response.status_code)
 
-    def test_endpoint_productos_put_productos_id_2_con_nombre_itemcambiado_precio_120_retorna_json_con_producto(self):
+    def test_endpoint_productos_put_productos_id_con_nombre_itemcambiado_precio_120_retorna_json_con_producto(self):
+        nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
+        conexion.sesion.add(nuevo_producto)        
+        conexion.sesion.commit()
+        
         producto_datos_actualizados = dict(
             nombre='itemcambiado',
             precio=120
         )
-        response = self.app.put('/productos/2', json=producto_datos_actualizados)
+
+        response = self.app.put(f'/productos/{nuevo_producto.id}', json=producto_datos_actualizados)
         response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual(2, response_json["id"])
         self.assertEqual(producto_datos_actualizados["nombre"], response_json["nombre"])
         self.assertEqual(producto_datos_actualizados["precio"], response_json["precio"])
         self.assertEqual(200, response.status_code)
