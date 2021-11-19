@@ -11,11 +11,17 @@ class SucursalServicio(RecursoServicio):
 
     @commit_after
     def insertar(self, nombre):
-        self._sesion.add(SucursalModelo(nombre = nombre))
+        sucursal_nueva = SucursalModelo(nombre = nombre)
+        self._sesion.add(sucursal_nueva)
 
+        return sucursal_nueva
+    
     @commit_after
     def actualizar(self, id, nombre):
-        self._sesion.query(SucursalModelo).filter(SucursalModelo.id == id).update({"nombre" : nombre})
+        sucursal_a_actualizar = self._sesion.query(SucursalModelo).filter(SucursalModelo.id == id).first()
+        sucursal_a_actualizar.nombre = nombre
+
+        return sucursal_a_actualizar
     
     @commit_after
     def eliminar(self, id):
