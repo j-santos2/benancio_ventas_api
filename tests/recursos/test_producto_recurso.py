@@ -2,12 +2,24 @@ import json
 import unittest
 from app import app
 from src.recursos.productos import Productos, Producto
+from conexion import conexion
 
 class Test_RecursoProducto(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
+    @classmethod
+    def setUpClass(cls):
+        app.config["TESTING"] = True
+        app.config["DEBUG"] = True
+        cls.app = app.test_client()
 
-    def test_enpoint_productos_retorna_json_con_productos(self):
+    def setUp(self):
+        pass
+
+    
+    def tearDown(self):
+        conexion.sesion.query(Producto).delete()
+
+
+    def test_endpoint_productos_retorna_json_con_productos(self):
         response = self.app.get("/productos")
 
         response_json = json.loads(response.data.decode("utf-8"))
@@ -15,7 +27,7 @@ class Test_RecursoProducto(unittest.TestCase):
         self.assertEqual('<h1>Game 1</h1>', response_json)
         self.assertEqual(200, response.status_code)
 
-    def test_enpoint_productos_id_2_retorna_json_con_producto_de_id_2(self):
+    def test_endpoint_productos_id_2_retorna_json_con_producto_de_id_2(self):
         response = self.app.get("/productos/2")
         
         response_json = json.loads(response.data.decode("utf-8"))
@@ -28,7 +40,7 @@ class Test_RecursoProducto(unittest.TestCase):
             nombre='item',
             precio=100
         )
-        response = self.app.post('/productos', data=nuevo_producto)
+        response = self.app.post('/productos', json=nuevo_producto)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertIsNotNone(response_json["id"])
@@ -41,7 +53,7 @@ class Test_RecursoProducto(unittest.TestCase):
             nombre='itemcambiado',
             precio=120
         )
-        response = self.app.put('/productos/2', data=producto_datos_actualizados)
+        response = self.app.put('/productos/2', json=producto_datos_actualizados)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual(2, response_json["id"])
