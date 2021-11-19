@@ -3,21 +3,21 @@ import string
 import unittest
 
 from conexion import conexion
-from src.modelos import Producto
+from src.modelos import ProductoModelo
 from src.servicios import producto
 
 
 class Test_ProductoServicio(unittest.TestCase):
 
     def setUp(self):
-        conexion.sesion.add(Producto(nombre="1º producto", precio=10000))
-        conexion.sesion.add(Producto(nombre="2º producto", precio=20000))
-        conexion.sesion.add(Producto(nombre="3º producto", precio=30000))
-        conexion.sesion.add(Producto(nombre="4º producto", precio=40000))
-        conexion.sesion.add(Producto(nombre="5º producto", precio=50000))
+        conexion.sesion.add(ProductoModelo(nombre="1º producto", precio=10000))
+        conexion.sesion.add(ProductoModelo(nombre="2º producto", precio=20000))
+        conexion.sesion.add(ProductoModelo(nombre="3º producto", precio=30000))
+        conexion.sesion.add(ProductoModelo(nombre="4º producto", precio=40000))
+        conexion.sesion.add(ProductoModelo(nombre="5º producto", precio=50000))
 
     def tearDown(self):
-        conexion.sesion.query(Producto).delete()
+        conexion.sesion.query(ProductoModelo).delete()
 
     def test_producto_obtener_todos_retorna_lista_con_objetos_con_id_nombre_precio(self):
         resultado = producto.obtener_todos()
@@ -42,7 +42,7 @@ class Test_ProductoServicio(unittest.TestCase):
         self.assertEqual(precio_rnd, productos[-1].precio)
 
     def test_producto_insertado_tiene_id_distinto_de_none(self):        
-        producto_nuevo = producto.insertar('Producto con ID', 1000)
+        producto_nuevo = producto.insertar('ProductoModelo con ID', 1000)
 
         self.assertIsNotNone(producto_nuevo.id)
 
