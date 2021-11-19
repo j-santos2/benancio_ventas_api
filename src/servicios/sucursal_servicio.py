@@ -27,7 +27,7 @@ class SucursalServicio(RecursoServicio):
     def eliminar(self, id):
         elemento = self._sesion.get(SucursalModelo, id)
         if elemento == None:
-            raise Exception("Registro no encontrado")
+            raise Exception(f"Sucursal con id {id} no existe")
         self._sesion.delete(elemento)
 
 sucursal = SucursalServicio()

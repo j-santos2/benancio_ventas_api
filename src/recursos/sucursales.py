@@ -30,3 +30,10 @@ class Sucursal(Resource):
     def put(self, id):
         respuesta = sucursal.actualizar(id, api.payload['nombre'])
         return respuesta, 200
+
+    def delete(self, id):
+        try:
+            sucursal.eliminar(id)
+            return {"Mensaje":f"Sucursal con id {id} eliminada con exito"}, 200
+        except Exception as e:
+            return {"Mensaje":str(e)}
