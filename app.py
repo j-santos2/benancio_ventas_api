@@ -1,4 +1,3 @@
-from src.servicios import producto, vendedor, sucursal, venta
 from src.recursos import Productos, Producto, Vendedores, Vendedor, Sucursales, Sucursal, Ventas, Venta
 
 from src import app, api
