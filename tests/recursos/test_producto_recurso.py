@@ -1,7 +1,7 @@
 import json
 import unittest
 from app import app
-from src.recursos.productos import Productos, Producto
+from src.modelos import ProductoModelo
 from conexion import conexion
 
 class Test_RecursoProducto(unittest.TestCase):
@@ -12,27 +12,42 @@ class Test_RecursoProducto(unittest.TestCase):
         cls.app = app.test_client()
 
     def setUp(self):
-        pass
-
-    
+        conexion.sesion.add(ProductoModelo(nombre="1º producto", precio=10000))
+        conexion.sesion.add(ProductoModelo(nombre="2º producto", precio=20000))
+        conexion.sesion.add(ProductoModelo(nombre="3º producto", precio=30000))
+        conexion.sesion.add(ProductoModelo(nombre="4º producto", precio=40000))
+        conexion.sesion.add(ProductoModelo(nombre="5º producto", precio=50000))
+            
     def tearDown(self):
-        conexion.sesion.query(Producto).delete()
+        conexion.sesion.query(ProductoModelo).delete()
 
 
     def test_endpoint_productos_retorna_json_con_productos(self):
         response = self.app.get("/productos")
 
         response_json = json.loads(response.data.decode("utf-8"))
+        primer_producto = response_json[0]
 
-        self.assertEqual('<h1>Game 1</h1>', response_json)
+        self.assertTrue("id" in primer_producto)
+        self.assertTrue("nombre" in primer_producto)
+        self.assertTrue("precio" in primer_producto)
+        self.assertTrue("uri" in primer_producto)
         self.assertEqual(200, response.status_code)
 
-    def test_endpoint_productos_id_2_retorna_json_con_producto_de_id_2(self):
-        response = self.app.get("/productos/2")
+    def test_endpoint_productos_get_con_id_retorna_json_del_producto_con_sus_campos(self):
+        nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
+        conexion.sesion.add(nuevo_producto)        
+        conexion.sesion.commit()
+
+        uri_nuevo_producto = f"/productos/{nuevo_producto.id}"
+        response = self.app.get(uri_nuevo_producto)
         
         response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual(2, response_json["id"])
+        self.assertEqual(nuevo_producto.id, response_json["id"])
+        self.assertEqual(nuevo_producto.nombre, response_json["nombre"])
+        self.assertEqual(nuevo_producto.precio, response_json["precio"])
+        self.assertEqual(uri_nuevo_producto, response_json["uri"])        
         self.assertEqual(200, response.status_code)
 
     def test_endpoint_productos_post_productos_con_nombre_item_precio_100_retorna_json_con_producto(self):
