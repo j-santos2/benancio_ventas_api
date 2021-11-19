@@ -1,39 +1,39 @@
 import unittest
 
 from conexion import conexion
-from src.modelos import Venta, Producto, Vendedor, Sucursal
+from src.modelos import VentaModelo, ProductoModelo, VendedorModelo, SucursalModelo
 from src.servicios import venta
 
 class Test_VentasServicio(unittest.TestCase):
     def setUp(self):
-        primera_sucursal = Sucursal(nombre = "Primera sucursal")
-        segunda_sucursal = Sucursal(nombre = "Segunda sucursal")
+        primera_sucursal = SucursalModelo(nombre = "Primera sucursal")
+        segunda_sucursal = SucursalModelo(nombre = "Segunda sucursal")
         conexion.sesion.add(primera_sucursal)
         conexion.sesion.add(segunda_sucursal)
         conexion.sesion.commit()
         
-        primer_vendedor = Vendedor(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id)
-        segundo_vendedor = Vendedor(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id)
+        primer_vendedor = VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id)
+        segundo_vendedor = VendedorModelo(nombre="5º", apellido="vendedor", sucursal_id=segunda_sucursal.id)
         conexion.sesion.add(primer_vendedor)
         conexion.sesion.add(segundo_vendedor)
 
-        primer_producto = Producto(nombre="1º producto", precio=10000)
-        segundo_producto = Producto(nombre="2º producto", precio=20000)
+        primer_producto = ProductoModelo(nombre="1º producto", precio=10000)
+        segundo_producto = ProductoModelo(nombre="2º producto", precio=20000)
         conexion.sesion.add(primer_producto)
         conexion.sesion.add(segundo_producto)
         
         conexion.sesion.commit()
 
-        conexion.sesion.add(Venta(producto_id=primer_producto.id, vendedor_id=primer_vendedor.id))
-        conexion.sesion.add(Venta(producto_id=segundo_producto.id, vendedor_id=segundo_vendedor.id))
-        conexion.sesion.add(Venta(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
-        conexion.sesion.add(Venta(producto_id=primer_producto.id, vendedor_id=segundo_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=primer_producto.id, vendedor_id=primer_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=segundo_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=primer_producto.id, vendedor_id=segundo_vendedor.id))
 
     def tearDown(self):
-        conexion.sesion.query(Vendedor).delete()
-        conexion.sesion.query(Sucursal).delete()
-        conexion.sesion.query(Producto).delete()
-        conexion.sesion.query(Venta).delete()
+        conexion.sesion.query(VendedorModelo).delete()
+        conexion.sesion.query(SucursalModelo).delete()
+        conexion.sesion.query(ProductoModelo).delete()
+        conexion.sesion.query(VentaModelo).delete()
 
     def test_venta_obtener_todos_retorna_lista_con_objetos_con_id_productoid_vendedorid(self):
         resultado = venta.obtener_todos()
