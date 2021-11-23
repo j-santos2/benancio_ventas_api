@@ -75,23 +75,19 @@ class Test_RecursoProducto(unittest.TestCase):
         self.assertEqual(200, response.status_code)
 
 
-    def test_endpoint_sucursales_delete_id_retorna_mensaje_sucursal_id_eliminada_con_exito(self):
+    def test_endpoint_sucursales_delete_id_retorna_status_code_204(self):
         nueva_sucursal = SucursalModelo(nombre="Nueva sucursal")
         conexion.sesion.add(nueva_sucursal)        
         conexion.sesion.commit()
         
         response = self.app.delete(f'/sucursales/{nueva_sucursal.id}')
 
-        respuesta = json.loads(response.data.decode("utf-8"))
-
-        self.assertEqual({"Mensaje":"Sucursal con id "+ str(nueva_sucursal.id) +" eliminada con exito"}, respuesta)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(204, response.status_code)
 
     def test_endpoint_sucursales_delete_id_9000_retorna_mensaje_sucursal_id_9000_no_existe(self):
         response = self.app.delete('/sucursales/9000')
 
         respuesta = json.loads(response.data.decode("utf-8"))
 
-
         self.assertEqual({"Mensaje":"Sucursal con id 9000 no existe"}, respuesta)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(404, response.status_code)

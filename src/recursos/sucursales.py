@@ -34,6 +34,6 @@ class Sucursal(Resource):
     def delete(self, id):
         try:
             sucursal.eliminar(id)
-            return {"Mensaje":f"Sucursal con id {id} eliminada con exito"}, 200
+            return "", 204
         except Exception as e:
-            return {"Mensaje":str(e)}
+            return {"Mensaje":str(e)}, 404
