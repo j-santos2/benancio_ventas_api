@@ -1,6 +1,7 @@
 from .recurso_servicio import RecursoServicio
 from .decorators_servicios import commit_after
 from ..modelos import SucursalModelo
+from .exceptions import ObjetoNoEncontrado
 
 class SucursalServicio(RecursoServicio):
     def obtener_todos(self):
@@ -27,7 +28,7 @@ class SucursalServicio(RecursoServicio):
     def eliminar(self, id):
         elemento = self._sesion.get(SucursalModelo, id)
         if elemento == None:
-            raise Exception(f"Sucursal con id {id} no existe")
+            raise ObjetoNoEncontrado(f"Sucursal con id {id} no existe")
         self._sesion.delete(elemento)
 
 sucursal = SucursalServicio()

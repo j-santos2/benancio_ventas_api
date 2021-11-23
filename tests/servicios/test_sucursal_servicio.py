@@ -3,7 +3,7 @@ import string
 import unittest
 
 from conexion import conexion
-from src.modelos import SucursalModelo
+from src.modelos import SucursalModelo, VendedorModelo
 from src.servicios import sucursal
 
 
@@ -62,3 +62,14 @@ class Test_SucursalServicio(unittest.TestCase):
             sucursal.eliminar(-1)
 
         self.assertEqual("Registro no encontrado", str(cm.exception))
+
+    def test_eliminar_sucursal_con_vendedores_atrapa_excepcion_y_rollback(self):
+        sucursal_dot = SucursalModelo(nombre="Dot")
+        conexion.sesion.add(sucursal_dot)
+        conexion.sesion.commit()
+        conexion.sesion.add(VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=sucursal_dot.id))
+        conexion.sesion.commit()
+        
+        response = sucursal.eliminar(sucursal_dot.id)
+        self.assertEqual({"Mensaje:":"Rollback realizado"}, response)
+        
