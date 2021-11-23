@@ -10,6 +10,9 @@ class VendedorServicio(RecursoServicio):
     def obtener_uno (self, _id):
         return self._sesion.query(VendedorModelo).filter(VendedorModelo.id == _id).first()
 
+    def obtener_vendedores_por_sucursal(self,_id):
+        return self._sesion.query(VendedorModelo).filter(VendedorModelo.sucursal_id == _id).all()
+    
     @commit_after
     def insertar(self, nombre, apellido, sucursal_id):
         vendedor_nuevo = VendedorModelo(nombre = nombre,apellido = apellido, sucursal_id = sucursal_id)
