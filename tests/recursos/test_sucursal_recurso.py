@@ -1,7 +1,7 @@
 import json
 import unittest
 from app import app
-from src.modelos import SucursalModelo
+from src.modelos import SucursalModelo, VendedorModelo
 from conexion import conexion
 
 class Test_RecursoProducto(unittest.TestCase):
@@ -91,3 +91,22 @@ class Test_RecursoProducto(unittest.TestCase):
 
         self.assertEqual({"Mensaje":"Sucursal con id 9000 no existe"}, respuesta)
         self.assertEqual(404, response.status_code)
+
+    def test_endpoint_sucursales_con_vendedores_retorna_vendedores_de_cada_sucursal(self):
+        nueva_sucursal = SucursalModelo(nombre="Nueva sucursal")
+        conexion.sesion.add(nueva_sucursal)        
+        conexion.sesion.commit()
+
+        conexion.sesion.add(VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=nueva_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="2º", apellido="vendedor", sucursal_id=nueva_sucursal.id))
+        conexion.sesion.add(VendedorModelo(nombre="3º", apellido="vendedor", sucursal_id=nueva_sucursal.id))
+        conexion.sesion.commit()
+        
+        response = self.app.get(f"/sucursales/{nueva_sucursal.id}/vendedores")
+        
+        response_json = json.loads(response.data.decode("utf-8"))
+
+        for vendedor in response_json:
+            self.assertEqual(nueva_sucursal.id, vendedor["sucursal_id"])
+        
+        self.assertEqual(200, response.status_code)
