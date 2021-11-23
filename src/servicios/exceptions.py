@@ -1,0 +1,2 @@
+class ObjetoNoEncontrado(Exception):
+    pass
