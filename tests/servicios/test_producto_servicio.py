@@ -73,4 +73,4 @@ class Test_ProductoServicio(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             producto.eliminar(-1)
 
-        self.assertEqual("Registro no encontrado", str(cm.exception))
+        self.assertEqual("Producto con id -1 no existe", str(cm.exception))

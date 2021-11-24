@@ -80,16 +80,16 @@ class Test_RecursoProducto(unittest.TestCase):
         self.assertEqual(producto_datos_actualizados["precio"], response_json["precio"])
         self.assertEqual(200, response.status_code)
 
-    def test_endpoint_productos_put_productos_id_2_con_nombre_itemcambiado_precio_120_retorna_retorna_mensaje_producto_id_60_no_existe(self):
+    def test_endpoint_productos_put_productos_id_9000_retorna_mensaje_producto_no_existe(self):
         producto_datos_actualizados = dict(
             nombre='itemcambiado',
             precio=120
         )
 
-        response = self.app.put('/productos/2', data=producto_datos_actualizados)
+        response = self.app.put('/productos/9000', data=producto_datos_actualizados)
+        response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual("{\"Mensaje\":\"Producto con id 60 no existe\"}", response.data.decode("utf-8"))
-        self.assertEqual(204, response.status_code)
+        self.assertEqual("Producto con id 9000 no existe", response_json["Mensaje"])
 
     def test_endpoint_productos_delete_id_retorna_mensaje_producto_id_2_eliminado_con_exito(self):
         nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
