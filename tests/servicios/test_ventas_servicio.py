@@ -54,3 +54,36 @@ class Test_VentasServicio(unittest.TestCase):
 
         self.assertEqual(1, ventas[-1].producto_id)
         self.assertEqual(1, ventas[-1].vendedor_id)
+    
+    def test_obtener_ventas_por_vendedor_retorna_las_ventas_de_vendedor(self):
+        primera_sucursal = SucursalModelo(nombre = "Primera sucursal")
+        conexion.sesion.add(primera_sucursal)
+        conexion.sesion.commit()
+
+        primer_vendedor = VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id)
+        conexion.sesion.add(primer_vendedor)
+
+        primer_producto = ProductoModelo(nombre="1º producto", precio=10000)
+        segundo_producto = ProductoModelo(nombre="2º producto", precio=20000)
+
+        conexion.sesion.add(primer_producto)
+        conexion.sesion.add(segundo_producto)
+        conexion.sesion.commit()
+
+        conexion.sesion.add(VentaModelo(producto_id=primer_producto.id, vendedor_id=primer_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
+        conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
+
+        ventas = venta.obtener_ventas_por_vendedor(primer_vendedor.id)
+
+        for item in ventas:
+            self.assertEqual(primer_vendedor.id, item.vendedor_id)
+
+        self.assertEqual(primer_producto.nombre, ventas[0].producto.nombre)
+        self.assertEqual(primer_producto.precio, ventas[0].producto.precio)
+
+        self.assertEqual(segundo_producto.nombre, ventas[1].producto.nombre)
+        self.assertEqual(segundo_producto.precio, ventas[1].producto.precio)
+
+        self.assertEqual(segundo_producto.nombre, ventas[2].producto.nombre)
+        self.assertEqual(segundo_producto.precio, ventas[2].producto.precio)
