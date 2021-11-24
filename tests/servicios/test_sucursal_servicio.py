@@ -17,8 +17,8 @@ class Test_SucursalServicio(unittest.TestCase):
         conexion.sesion.add(SucursalModelo(nombre="5ª sucursal"))
 
     def tearDown(self):
+        conexion.sesion.query(VendedorModelo).delete()
         conexion.sesion.query(SucursalModelo).delete()
-        conexion.sesion.commit()
 
     def test_sucursal_obtener_todos_retorna_lista_con_objetos_con_id_nombre(self):
         resultado = sucursal.obtener_todos()
@@ -66,8 +66,6 @@ class Test_SucursalServicio(unittest.TestCase):
 
         self.assertEqual("Sucursal con id -1 no existe", str(cm.exception))
 
-    #VEEEEERRR QUE PASAAA ACAAA
-    @unittest.skip
     def test_eliminar_sucursal_con_vendedores_atrapa_excepcion_y_rollback(self):
         sucursal_dot = SucursalModelo(nombre="Dot")
         conexion.sesion.add(sucursal_dot)
