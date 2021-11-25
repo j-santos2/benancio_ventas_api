@@ -17,6 +17,8 @@ class Usuarios(Resource):
 
 class UsuarioLogin(Resource):
     def post(self):
-        access_token = create_access_token(identity = api.payload["nombre"])
-
-        return {"token":access_token}, 201
+        if usuario.login(api.payload["nombre"], api.payload["clave"]):
+            access_token = create_access_token(identity = api.payload["nombre"])
+            return {"token":access_token}, 201
+        else:
+            return {"Mensaje":"Nombre de usuario y/o clave incorrecta"}, 401

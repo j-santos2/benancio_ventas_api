@@ -13,6 +13,9 @@ class Test_UsuarioRecurso(unittest.TestCase):
     def setUp(self):
         self.__app = app.test_client()
 
+    def tearDown(self):
+        conexion.sesion.query(UsuarioModelo).delete()
+
     def test_endpoint_usuarios_post_crea_usuario_y_devuelve_usuario_y_status_201(self):
         response = self.__app.post("/usuarios",json = {"nombre": "Pepito", "clave":"dificil123"})
         response_json = json.loads(response.data.decode("utf-8"))
@@ -33,3 +36,10 @@ class Test_UsuarioRecurso(unittest.TestCase):
             access_token = decode_token(response_json['token'])
         
         self.assertEqual(nuevo_usuario.nombre, access_token['sub'])
+
+    def test_endpoint_usuarios_login_usuario_no_valido_retorna_mensaje_de_error_y_401(self):
+        response = self.__app.post("/usuarios/login",json = {"nombre": "Pepito", "clave":"dificil123"})
+        response_json = json.loads(response.data.decode("utf-8"))
+        
+        self.assertEqual({"Mensaje":"Nombre de usuario y/o clave incorrecta"}, response_json)
+        self.assertEqual(401, response.status_code)
