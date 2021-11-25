@@ -1,4 +1,4 @@
-from src.recursos import Productos, Producto, Vendedores, Vendedor, VendedorConVentas, Sucursales, Sucursal, SucursalConVendedores, Ventas, Venta
+from src.recursos import Productos, Producto, Vendedores, Vendedor, VendedorConVentas, Sucursales, Sucursal, SucursalConVendedores, Ventas, Venta, Usuarios
 
 from src import app, api
 
@@ -16,3 +16,5 @@ api.add_resource(SucursalConVendedores, '/sucursales/<int:id>/vendedores', endpo
 
 api.add_resource(Ventas, '/ventas', endpoint = 'ventas_ep')
 api.add_resource(Venta, '/ventas/<int:id>', endpoint = 'venta_ep')
+
+api.add_resource(Usuarios,'/usuarios', endpoint = 'usuarios_ep')
