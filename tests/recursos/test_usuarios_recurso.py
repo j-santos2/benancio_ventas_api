@@ -3,6 +3,8 @@ import unittest
 from app import app
 from src.modelos import UsuarioModelo
 from conexion import conexion
+from flask_jwt_extended import create_access_token
+from werkzeug.security import generate_password_hash
 
 class Test_UsuarioRecurso(unittest.TestCase):
 
@@ -15,3 +17,16 @@ class Test_UsuarioRecurso(unittest.TestCase):
 
         self.assertEqual("Pepito", response_json["nombre"])
         self.assertEqual(201, response.status_code)
+
+    def test_endpoint_usuarios_login_retorna_token_de_acceso(self):
+        pass_hasheado = generate_password_hash("dificil123")
+        nuevo_usuario = UsuarioModelo(nombre="Pepito", clave=pass_hasheado)
+        conexion.sesion.add(nuevo_usuario)
+        conexion.sesion.commit()
+
+        response = self.__app.post("/usuarios/login",json = {"nombre": "Pepito", "clave":"dificil123"})
+        response_json = json.loads(response.data.decode("utf-8"))
+
+        access_token = create_access_token(identity = nuevo_usuario.nombre)
+        
+        self.assertEqual(access_token, response_json["token"])
