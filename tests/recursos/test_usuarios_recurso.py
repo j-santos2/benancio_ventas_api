@@ -1,5 +1,7 @@
 import json
 import unittest
+
+from flask_jwt_extended import decode_token
 from app import app
 from src.modelos import UsuarioModelo
 from conexion import conexion
@@ -27,6 +29,7 @@ class Test_UsuarioRecurso(unittest.TestCase):
         response = self.__app.post("/usuarios/login",json = {"nombre": "Pepito", "clave":"dificil123"})
         response_json = json.loads(response.data.decode("utf-8"))
 
-        access_token = create_access_token(identity = nuevo_usuario.nombre)
+        with self.__app.application.app_context():
+            access_token = decode_token(response_json['token'])
         
-        self.assertEqual(access_token, response_json["token"])
+        self.assertEqual(nuevo_usuario.nombre, access_token['sub'])

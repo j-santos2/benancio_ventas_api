@@ -1,4 +1,5 @@
 import unittest
+from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from conexion import conexion
 from src.modelos import UsuarioModelo
@@ -22,6 +23,12 @@ class Test_UsuarioServicio(unittest.TestCase):
 
         self.assertTrue(check_password_hash(respuesta.clave, "qwerty12345"))
 
-        
+    def test_login_usuario_retorna_True_si_usuario_es_valido(self):
+        pass_hasheado = generate_password_hash("dificil123")
+        nuevo_usuario = UsuarioModelo(nombre="Pepito", clave=pass_hasheado)
+        conexion.sesion.add(nuevo_usuario)
+        conexion.sesion.commit()
 
-    
+        respuesta = usuario.login(nombre="Pepito", clave="dificil123")
+      
+        self.assertTrue(respuesta)
