@@ -23,7 +23,7 @@ class Test_UsuarioRecurso(unittest.TestCase):
         self.assertEqual("Pepito", response_json["nombre"])
         self.assertEqual(201, response.status_code)
 
-    def test_endpoint_usuarios_login_retorna_token_de_acceso(self):
+    def test_endpoint_usuarios_login_retorna_token_de_acceso_y_201(self):
         pass_hasheado = generate_password_hash("dificil123")
         nuevo_usuario = UsuarioModelo(nombre="Pepito", clave=pass_hasheado)
         conexion.sesion.add(nuevo_usuario)
@@ -36,6 +36,7 @@ class Test_UsuarioRecurso(unittest.TestCase):
             access_token = decode_token(response_json['token'])
         
         self.assertEqual(nuevo_usuario.nombre, access_token['sub'])
+        self.assertEqual(201, response.status_code)
 
     def test_endpoint_usuarios_login_usuario_no_valido_retorna_mensaje_de_error_y_401(self):
         response = self.__app.post("/usuarios/login",json = {"nombre": "Pepito", "clave":"dificil123"})
