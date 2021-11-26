@@ -1,6 +1,6 @@
-from src.recursos import Productos, Producto, Vendedores, Vendedor, VendedorConVentas, Sucursales, Sucursal, SucursalConVendedores, Ventas, Venta, Usuarios, UsuarioLogin
-
 from src import app, api
+import src.recursos.error_handlers
+from src.recursos import Productos, Producto, Vendedores, Vendedor, VendedorConVentas, Sucursales, Sucursal, SucursalConVendedores, Ventas, Venta, Usuarios, UsuarioLogin
 
 
 api.add_resource(Productos, '/productos', endpoint = 'productos_ep')
