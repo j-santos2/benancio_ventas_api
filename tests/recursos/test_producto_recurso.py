@@ -1,5 +1,9 @@
 import json
 import unittest
+from unittest import mock
+
+from flask_jwt_extended import create_access_token
+
 from app import app
 from src.modelos import ProductoModelo
 from conexion import conexion
@@ -17,6 +21,13 @@ class Test_RecursoProducto(unittest.TestCase):
         conexion.sesion.add(ProductoModelo(nombre="3º producto", precio=30000))
         conexion.sesion.add(ProductoModelo(nombre="4º producto", precio=40000))
         conexion.sesion.add(ProductoModelo(nombre="5º producto", precio=50000))
+
+        with self.app.application.app_context():
+            self.__access_token = create_access_token('testuser')
+
+        self.__headers = {
+            'Authorization': f'Bearer {self.__access_token}'
+        }
             
     def tearDown(self):
         conexion.sesion.query(ProductoModelo).delete()
@@ -86,7 +97,7 @@ class Test_RecursoProducto(unittest.TestCase):
             precio=120
         )
 
-        response = self.app.put('/productos/9000', data=producto_datos_actualizados)
+        response = self.app.put('/productos/9000', json=producto_datos_actualizados)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual("Producto con id 9000 no existe", response_json["Mensaje"])
@@ -96,18 +107,27 @@ class Test_RecursoProducto(unittest.TestCase):
         conexion.sesion.add(nuevo_producto)        
         conexion.sesion.commit()
         
-        response = self.app.delete(f'/productos/{nuevo_producto.id}')
+        response = self.app.delete(f'/productos/{nuevo_producto.id}', headers=self.__headers)
 
         respuesta = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual({"Mensaje":"Producto con id "+ str(nuevo_producto.id) +" eliminado con exito"}, respuesta)
         self.assertEqual(200, response.status_code)
 
-    def test_endpoint_productos_delete_id_9000_retorna_mensaje_producto_id_60_no_existe(self):
-        response = self.app.delete('/productos/9000')
+    @mock.patch("src.recursos.productos.producto.eliminar")
+    def test_endpoint_productos_delete_id_9000_retorna_mensaje_producto_id_9000_no_existe(self, m_eliminar):
+        m_eliminar.side_effect = Exception("Producto con id 9000 no existe")
 
+        response = self.app.delete('/productos/9000', headers=self.__headers)
         respuesta = json.loads(response.data.decode("utf-8"))
-
 
         self.assertEqual({"Mensaje":"Producto con id 9000 no existe"}, respuesta)
         self.assertEqual(200, response.status_code)
+        m_eliminar.assert_called_once_with(9000)
+
+    def test_endpoint_productos_delete_sin_token_devuelve_missing_authorization_y_status_401(self):
+        response = self.app.delete('/productos/9000')
+        respuesta = json.loads(response.data.decode("utf-8"))
+
+        self.assertEqual({"msg":"Missing Authorization Header"}, respuesta)
+        self.assertEqual(401, response.status_code)
