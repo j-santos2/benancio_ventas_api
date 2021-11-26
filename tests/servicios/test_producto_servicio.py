@@ -2,9 +2,12 @@ from random import choices, randint
 import string
 import unittest
 
+from sqlalchemy.orm import session
+
 from conexion import conexion
 from src.modelos import ProductoModelo
 from src.servicios import producto
+from src.servicios.exceptions import ObjetoNoEncontrado
 
 
 class Test_ProductoServicio(unittest.TestCase):
@@ -59,15 +62,18 @@ class Test_ProductoServicio(unittest.TestCase):
         self.assertEqual(nombre_rnd, resultado.nombre)
         self.assertEqual(precio_rnd, resultado.precio)
 
-    def test_eliminar_producto_nuevo_obtener_uno_devuelve_none(self):
-        nombre_rnd = ''.join(choices(string.ascii_lowercase, k=5))
-        precio_rnd = randint(100,300)
-        producto.insertar(nombre_rnd, precio_rnd)
+    def test_eliminar_producto_nuevo_obtener_uno_levanta_(self):
+        producto_nuevo = ProductoModelo(nombre="1º producto", precio=10000)
+        conexion.sesion.add(producto_nuevo)
+        conexion.sesion.commit()
+        
+        id_producto_a_eliminar = producto_nuevo.id
+        producto.eliminar(id_producto_a_eliminar)
+        
+        
+        respuesta = conexion.sesion.query(ProductoModelo).filter(ProductoModelo.id == id_producto_a_eliminar).first()
 
-        _id = producto.obtener_todos()[-1].id
-        producto.eliminar(_id)
-        resultado = producto.obtener_uno(_id)
-        self.assertEqual(None, resultado)
+        self.assertEqual(None, respuesta)
 
     def test_eliminar_producto_id_no_existente_menos1_raise_exception(self):
         with self.assertRaises(Exception) as cm:

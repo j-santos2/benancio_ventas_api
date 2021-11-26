@@ -7,6 +7,7 @@ from sqlalchemy import func
 from conexion import conexion
 from src.modelos import VendedorModelo, SucursalModelo
 from src.servicios import vendedor
+from src.servicios.exceptions import ObjetoNoEncontrado
 
 class Test_VendedorServicio(unittest.TestCase):
     def setUp(self):
@@ -70,17 +71,24 @@ class Test_VendedorServicio(unittest.TestCase):
         self.assertEqual(sucursal_id, resultado.sucursal_id)
 
     def test_eliminar_vendedor_nueva_obtener_uno_devuelve_none(self):
-        nombre_rnd = ''.join(choices(string.ascii_lowercase, k=5))
-        apellido_rnd = ''.join(choices(string.ascii_lowercase, k=5))
-        vendedor.insertar(nombre_rnd, apellido_rnd, 1)
+        primera_sucursal = SucursalModelo(nombre = "Primera sucursal")
+        conexion.sesion.add(primera_sucursal)
 
-        _id = vendedor.obtener_todos()[-1].id
-        vendedor.eliminar(_id)
-        resultado = vendedor.obtener_uno(_id)
-        self.assertEqual(None, resultado)
+        conexion.sesion.commit()
+
+        vendedor_nuevo = VendedorModelo(nombre="1º", apellido="vendedor", sucursal_id=primera_sucursal.id)
+        conexion.sesion.add(vendedor_nuevo)
+        conexion.sesion.commit()
+        
+        _id = vendedor_nuevo.id
+        vendedor.eliminar(_id)        
+        
+        respuesta = conexion.sesion.query(VendedorModelo).filter(VendedorModelo.id == _id).first()
+
+        self.assertEqual(None, respuesta)
 
     def test_eliminar_vendedor_id_no_existente_menos1_raise_exception(self):
-        with self.assertRaises(Exception) as cm:
+        with self.assertRaises(ObjetoNoEncontrado) as cm:
             vendedor.eliminar(-1)
 
-        self.assertEqual("Registro no encontrado", str(cm.exception))
+        self.assertEqual("Vendedor con id -1 no existe", str(cm.exception))

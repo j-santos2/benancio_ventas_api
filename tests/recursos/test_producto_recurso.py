@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token
 from app import app
 from src.modelos import ProductoModelo
 from conexion import conexion
+from src.servicios.exceptions import ObjetoNoEncontrado
 
 class Test_RecursoProducto(unittest.TestCase):
     @classmethod
@@ -100,7 +101,7 @@ class Test_RecursoProducto(unittest.TestCase):
         response = self.app.put('/productos/9000', json=producto_datos_actualizados)
         response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual("Producto con id 9000 no existe", response_json["Mensaje"])
+        self.assertEqual("Producto con id 9000 no existe", response_json["msg"])
 
     def test_endpoint_productos_delete_id_retorna_mensaje_producto_id_2_eliminado_con_exito(self):
         nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
@@ -109,20 +110,17 @@ class Test_RecursoProducto(unittest.TestCase):
         
         response = self.app.delete(f'/productos/{nuevo_producto.id}', headers=self.__headers)
 
-        respuesta = json.loads(response.data.decode("utf-8"))
-
-        self.assertEqual({"Mensaje":"Producto con id "+ str(nuevo_producto.id) +" eliminado con exito"}, respuesta)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(204, response.status_code)
 
     @mock.patch("src.recursos.productos.producto.eliminar")
     def test_endpoint_productos_delete_id_9000_retorna_mensaje_producto_id_9000_no_existe(self, m_eliminar):
-        m_eliminar.side_effect = Exception("Producto con id 9000 no existe")
+        m_eliminar.side_effect = ObjetoNoEncontrado("Producto con id 9000 no existe")
 
         response = self.app.delete('/productos/9000', headers=self.__headers)
         respuesta = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"Mensaje":"Producto con id 9000 no existe"}, respuesta)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual({"msg":"Producto con id 9000 no existe"}, respuesta)
+        self.assertEqual(400, response.status_code)
         m_eliminar.assert_called_once_with(9000)
 
     def test_endpoint_productos_delete_sin_token_devuelve_missing_authorization_y_status_401(self):

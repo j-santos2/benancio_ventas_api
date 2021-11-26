@@ -4,7 +4,7 @@ from app import app
 from src.modelos import SucursalModelo, VendedorModelo
 from conexion import conexion
 
-class Test_RecursoProducto(unittest.TestCase):
+class Test_RecursoSucursales(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         app.config["TESTING"] = True
@@ -89,8 +89,8 @@ class Test_RecursoProducto(unittest.TestCase):
 
         respuesta = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"Mensaje":"Sucursal con id 9000 no existe"}, respuesta)
-        self.assertEqual(404, response.status_code)
+        self.assertEqual({"msg":"Sucursal con id 9000 no existe"}, respuesta)
+        self.assertEqual(400, response.status_code)
 
     def test_endpoint_sucursales_con_vendedores_retorna_vendedores_de_cada_sucursal(self):
         nueva_sucursal = SucursalModelo(nombre="Nueva sucursal")
