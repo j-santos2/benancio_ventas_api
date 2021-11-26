@@ -5,6 +5,7 @@ import unittest
 from conexion import conexion
 from src.modelos import SucursalModelo, VendedorModelo
 from src.servicios import sucursal
+from src.servicios.exceptions import ErrorDeIntegridad
 
 
 class Test_SucursalServicio(unittest.TestCase):
@@ -72,7 +73,8 @@ class Test_SucursalServicio(unittest.TestCase):
         conexion.sesion.commit()
         conexion.sesion.add(VendedorModelo(nombre="Aquiles", apellido="Bailo", sucursal_id=sucursal_dot.id))
         conexion.sesion.commit()
-        
-        response = sucursal.eliminar(sucursal_dot.id)
-        self.assertEqual({"Mensaje:":"Rollback realizado"}, response)
+        with self.assertRaises(ErrorDeIntegridad) as cm:
+            sucursal.eliminar(sucursal_dot.id)
+            
+        self.assertEqual("Acción no permitida sobre el recurso.", str(cm.exception))
         

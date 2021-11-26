@@ -1,6 +1,7 @@
 import functools
 from conexion import conexion
 from sqlalchemy.exc import IntegrityError
+from src.servicios.exceptions import ErrorDeIntegridad
 
 def commit_after(data_function):
     @functools.wraps(data_function)
@@ -10,7 +11,7 @@ def commit_after(data_function):
             conexion.sesion.commit()
         except IntegrityError as e:
             conexion.sesion.rollback()
-            return {"Mensaje:":"Rollback realizado"}
+            raise ErrorDeIntegridad
         else:
             return objeto_nuevo
     return wrapper

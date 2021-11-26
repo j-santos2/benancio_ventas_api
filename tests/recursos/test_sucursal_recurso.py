@@ -20,6 +20,7 @@ class Test_RecursoSucursales(unittest.TestCase):
             
     def tearDown(self):
         conexion.sesion.query(SucursalModelo).delete()
+        conexion.sesion.query(VendedorModelo).delete()
 
 
     def test_endpoint_sucursales_retorna_json_con_sucursales(self):
