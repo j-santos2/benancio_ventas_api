@@ -35,8 +35,5 @@ class Producto(Resource):
 
     @jwt_required()
     def delete(self, id):
-        try:
-            producto.eliminar(id)
-            return {"Mensaje":f"Producto con id {id} eliminado con exito"}, 200
-        except Exception as e:
-            return {"Mensaje":str(e)}
+        producto.eliminar(id)
+        return "", 204

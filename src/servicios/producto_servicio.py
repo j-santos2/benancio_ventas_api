@@ -1,3 +1,4 @@
+from src.servicios.exceptions import ObjetoNoEncontrado
 from .recurso_servicio import RecursoServicio
 from .decorators_servicios import commit_after
 from ..modelos import ProductoModelo
@@ -13,7 +14,10 @@ class ProductoServicio(RecursoServicio):
         return self._sesion.query(ProductoModelo).all()
 
     def obtener_uno (self, _id):
-        return self._sesion.query(ProductoModelo).filter(ProductoModelo.id == _id).first()
+        producto_obtenido = self._sesion.query(ProductoModelo).filter(ProductoModelo.id == _id).first()
+        if producto_obtenido == None:
+            raise ObjetoNoEncontrado(f"Producto con id {_id} no existe")
+        return producto_obtenido
 
     @commit_after
     def insertar(self, nombre, precio):
@@ -23,18 +27,20 @@ class ProductoServicio(RecursoServicio):
         return producto_nuevo 
 
     @commit_after
-    def actualizar(self, id, nombre, precio):
-        producto_a_actualizar = self._sesion.query(ProductoModelo).filter(ProductoModelo.id == id).first()
+    def actualizar(self, _id, nombre, precio):
+        producto_a_actualizar = self._sesion.query(ProductoModelo).filter(ProductoModelo.id == _id).first()
+        if producto_a_actualizar == None:
+            raise ObjetoNoEncontrado(f"Producto con id {_id} no existe")
         producto_a_actualizar.nombre = nombre
         producto_a_actualizar.precio = precio
 
         return producto_a_actualizar
 
     @commit_after
-    def eliminar(self, id):
-        elemento = self._sesion.get(ProductoModelo, id)
+    def eliminar(self, _id):
+        elemento = self._sesion.get(ProductoModelo, _id)
         if elemento == None:
-            raise Exception(f"Producto con id {id} no existe")
+            raise ObjetoNoEncontrado(f"Producto con id {_id} no existe")
         self._sesion.delete(elemento)
 
 producto = ProductoServicio()
