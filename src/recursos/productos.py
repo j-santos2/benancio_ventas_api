@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Resource, fields
 from ..servicios import producto
 from src import api
@@ -32,6 +33,7 @@ class Producto(Resource):
         respuesta = producto.actualizar(id, api.payload['nombre'], api.payload['precio'])
         return respuesta, 200
 
+    @jwt_required()
     def delete(self, id):
         try:
             producto.eliminar(id)
