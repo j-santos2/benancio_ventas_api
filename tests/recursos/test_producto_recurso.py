@@ -1,5 +1,7 @@
 import json
 import unittest
+from unittest import mock
+
 from app import app
 from src.modelos import ProductoModelo
 from conexion import conexion
@@ -86,7 +88,7 @@ class Test_RecursoProducto(unittest.TestCase):
             precio=120
         )
 
-        response = self.app.put('/productos/9000', data=producto_datos_actualizados)
+        response = self.app.put('/productos/9000', json=producto_datos_actualizados)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual("Producto con id 9000 no existe", response_json["Mensaje"])
@@ -103,11 +105,13 @@ class Test_RecursoProducto(unittest.TestCase):
         self.assertEqual({"Mensaje":"Producto con id "+ str(nuevo_producto.id) +" eliminado con exito"}, respuesta)
         self.assertEqual(200, response.status_code)
 
-    def test_endpoint_productos_delete_id_9000_retorna_mensaje_producto_id_60_no_existe(self):
+    @mock.patch("src.recursos.productos.producto.eliminar")
+    def test_endpoint_productos_delete_id_9000_retorna_mensaje_producto_id_60_no_existe(self, m_eliminar):
+        m_eliminar.side_effect = Exception("Producto con id 9000 no existe")
+
         response = self.app.delete('/productos/9000')
-
         respuesta = json.loads(response.data.decode("utf-8"))
-
 
         self.assertEqual({"Mensaje":"Producto con id 9000 no existe"}, respuesta)
         self.assertEqual(200, response.status_code)
+        m_eliminar.assert_called_once_with(9000)
