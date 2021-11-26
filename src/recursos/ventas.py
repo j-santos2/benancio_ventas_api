@@ -4,10 +4,10 @@ from src import api
 
 
 venta_model = api.model('Venta', {
-    'id': fields.Integer,
+    'id': fields.Integer(readonly=True),
     'producto_id': fields.Integer,
     'vendedor_id': fields.Integer,
-    'uri': fields.Url('venta_ep')
+    'uri': fields.Url('venta_ep', readonly=True)
 })
 class Ventas(Resource):
     @api.marshal_with(venta_model)
