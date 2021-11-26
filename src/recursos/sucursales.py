@@ -4,9 +4,9 @@ from src import api
 
 
 sucursal_model = api.model('Sucursal', {
-    'id': fields.Integer,
+    'id': fields.Integer(readonly=True),
     'nombre': fields.String,
-    'uri': fields.Url('sucursal_ep')
+    'uri': fields.Url('sucursal_ep', readonly=True)
 })
 
 class Sucursales(Resource):
