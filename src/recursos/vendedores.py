@@ -4,11 +4,11 @@ from src import api
 
 
 vendedor_model = api.model('Vendedor', {
-    'id': fields.Integer,
+    'id': fields.Integer(readonly=True),
     'nombre': fields.String,
     'apellido': fields.String,
     'sucursal_id': fields.Integer,
-    'uri': fields.Url('vendedor_ep')
+    'uri': fields.Url('vendedor_ep', readonly=True)
 })
 
 class Vendedores(Resource):
