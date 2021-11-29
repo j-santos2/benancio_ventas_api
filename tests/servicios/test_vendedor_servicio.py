@@ -91,4 +91,4 @@ class Test_VendedorServicio(unittest.TestCase):
         with self.assertRaises(ObjetoNoEncontrado) as cm:
             vendedor.eliminar(-1)
 
-        self.assertEqual("Vendedor con id -1 no existe", str(cm.exception))
+        self.assertEqual("Entidad con id -1 no existe", str(cm.exception))

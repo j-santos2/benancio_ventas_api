@@ -9,10 +9,7 @@ class VendedorServicio(RecursoServicio):
         return self._sesion.query(VendedorModelo).all()
 
     def obtener_uno (self, _id):
-        vendedor_obtenido = self._sesion.query(VendedorModelo).filter(VendedorModelo.id == _id).first()
-        if vendedor_obtenido == None:
-            raise ObjetoNoEncontrado(f"Vendedor con id {_id} no existe")
-        return vendedor_obtenido
+        return self._get_or_fail(VendedorModelo, _id)
 
     def obtener_vendedores_por_sucursal(self,_id):
         return self._sesion.query(VendedorModelo).filter(VendedorModelo.sucursal_id == _id).all()
@@ -26,9 +23,7 @@ class VendedorServicio(RecursoServicio):
 
     @commit_after
     def actualizar(self, _id, nombre, apellido, sucursal_id):
-        vendedor_a_actualizar = self._sesion.query(VendedorModelo).filter(VendedorModelo.id == _id).first()
-        if vendedor_a_actualizar == None:
-            raise ObjetoNoEncontrado(f"Vendedor con id {_id} no existe")
+        vendedor_a_actualizar = self.obtener_uno(_id)
 
         vendedor_a_actualizar.nombre = nombre
         vendedor_a_actualizar.apellido = apellido
@@ -38,9 +33,7 @@ class VendedorServicio(RecursoServicio):
     
     @commit_after
     def eliminar(self, _id):
-        elemento = self._sesion.get(VendedorModelo, _id)
-        if elemento == None:
-            raise ObjetoNoEncontrado(f"Vendedor con id {_id} no existe")
+        elemento = self.obtener_uno(_id)
         self._sesion.delete(elemento)
 
 vendedor = VendedorServicio()
