@@ -9,10 +9,7 @@ class VentaServicio(RecursoServicio):
         return self._sesion.query(VentaModelo).all()
 
     def obtener_uno (self, _id):
-        venta_obtenida = self._sesion.query(VentaModelo).filter(VentaModelo.id == _id).first()
-        if venta_obtenida == None:
-            raise ObjetoNoEncontrado(f"Venta con id {_id} no existe")
-        return venta_obtenida
+        return self._get_or_fail(VentaModelo, _id)
 
     def obtener_ventas_por_vendedor(self, id):
         return self._sesion.query(VentaModelo).filter(VentaModelo.vendedor_id == id).all()
