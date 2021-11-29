@@ -1,8 +1,12 @@
 import json
 import unittest
+
+from flask_jwt_extended import create_access_token
+
 from app import app
 from src.modelos import SucursalModelo, VendedorModelo
 from conexion import conexion
+
 
 class Test_RecursoSucursales(unittest.TestCase):
     @classmethod
@@ -17,7 +21,14 @@ class Test_RecursoSucursales(unittest.TestCase):
         conexion.sesion.add(SucursalModelo(nombre="3º sucursal"))
         conexion.sesion.add(SucursalModelo(nombre="4º sucursal"))
         conexion.sesion.add(SucursalModelo(nombre="5º sucursal"))
-            
+
+        with self.app.application.app_context():
+            self.__access_token = create_access_token('testuser')
+
+        self.__headers = {
+            'Authorization': f'Bearer {self.__access_token}'
+        }
+
     def tearDown(self):
         conexion.sesion.query(SucursalModelo).delete()
         conexion.sesion.query(VendedorModelo).delete()
@@ -60,7 +71,7 @@ class Test_RecursoSucursales(unittest.TestCase):
         nueva_sucursal = dict(
             nombre='Pacífico'
         )
-        response = self.app.post('/sucursales', json=nueva_sucursal)
+        response = self.app.post('/sucursales', json=nueva_sucursal, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertIsNotNone(response_json["id"])
@@ -76,7 +87,7 @@ class Test_RecursoSucursales(unittest.TestCase):
             nombre='Abasto Shopping'
         )
 
-        response = self.app.put(f'/sucursales/{nueva_sucursal.id}', json=sucursal_actualizada)
+        response = self.app.put(f'/sucursales/{nueva_sucursal.id}', json=sucursal_actualizada, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual(sucursal_actualizada["nombre"], response_json["nombre"])
@@ -88,12 +99,12 @@ class Test_RecursoSucursales(unittest.TestCase):
         conexion.sesion.add(nueva_sucursal)        
         conexion.sesion.commit()
         
-        response = self.app.delete(f'/sucursales/{nueva_sucursal.id}')
+        response = self.app.delete(f'/sucursales/{nueva_sucursal.id}', headers=self.__headers)
 
         self.assertEqual(204, response.status_code)
 
     def test_endpoint_sucursales_delete_id_9000_retorna_mensaje_sucursal_id_9000_no_existe(self):
-        response = self.app.delete('/sucursales/9000')
+        response = self.app.delete('/sucursales/9000', headers=self.__headers)
 
         respuesta = json.loads(response.data.decode("utf-8"))
 

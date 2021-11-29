@@ -1,3 +1,4 @@
+from flask_jwt_extended.view_decorators import jwt_required
 from flask_restx import Resource, fields
 from ..servicios import sucursal
 from src import api
@@ -16,6 +17,7 @@ class Sucursales(Resource):
 
     @api.expect(sucursal_model)
     @api.marshal_with(sucursal_model, code=201)
+    @jwt_required()
     def post(self):
         respuesta = sucursal.insertar(api.payload['nombre'])
         return respuesta, 201
@@ -27,10 +29,12 @@ class Sucursal(Resource):
     
     @api.expect(sucursal_model)
     @api.marshal_with(sucursal_model, code=200)
+    @jwt_required()
     def put(self, id):
         respuesta = sucursal.actualizar(id, api.payload['nombre'])
         return respuesta, 200
 
+    @jwt_required()
     def delete(self, id):
         sucursal.eliminar(id)
         return "", 204
