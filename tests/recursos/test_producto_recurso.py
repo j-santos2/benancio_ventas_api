@@ -67,7 +67,7 @@ class Test_RecursoProducto(unittest.TestCase):
             nombre='item',
             precio=100
         )
-        response = self.app.post('/productos', json=nuevo_producto)
+        response = self.app.post('/productos', json=nuevo_producto, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertIsNotNone(response_json["id"])
@@ -85,7 +85,7 @@ class Test_RecursoProducto(unittest.TestCase):
             precio=120
         )
 
-        response = self.app.put(f'/productos/{nuevo_producto.id}', json=producto_datos_actualizados)
+        response = self.app.put(f'/productos/{nuevo_producto.id}', json=producto_datos_actualizados, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual(producto_datos_actualizados["nombre"], response_json["nombre"])
@@ -98,7 +98,7 @@ class Test_RecursoProducto(unittest.TestCase):
             precio=120
         )
 
-        response = self.app.put('/productos/9000', json=producto_datos_actualizados)
+        response = self.app.put('/productos/9000', json=producto_datos_actualizados, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual("Entidad con id 9000 no existe", response_json["msg"])

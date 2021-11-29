@@ -18,6 +18,7 @@ class Productos(Resource):
 
     @api.expect(producto_model)
     @api.marshal_with(producto_model, code=201)
+    @jwt_required()
     def post(self):
         respuesta = producto.insertar(api.payload['nombre'], api.payload['precio'])
         return respuesta, 201
@@ -29,6 +30,7 @@ class Producto(Resource):
 
     @api.expect(producto_model)
     @api.marshal_with(producto_model, code=200)
+    @jwt_required()
     def put(self, id):
         respuesta = producto.actualizar(id, api.payload['nombre'], api.payload['precio'])
         return respuesta, 200
