@@ -19,18 +19,14 @@ class SucursalServicio(RecursoServicio):
     
     @commit_after
     def actualizar(self, _id, nombre):
-        sucursal_a_actualizar = self._sesion.query(SucursalModelo).filter(SucursalModelo.id == _id).first()
-        if sucursal_a_actualizar == None:
-            raise ObjetoNoEncontrado(f"Sucursal con id {_id} no existe")
+        sucursal_a_actualizar = self.obtener_uno(_id)
         sucursal_a_actualizar.nombre = nombre
 
         return sucursal_a_actualizar
     
     @commit_after
     def eliminar(self, _id):
-        elemento = self._sesion.get(SucursalModelo, _id)
-        if elemento == None:
-            raise ObjetoNoEncontrado(f"Sucursal con id {_id} no existe")
-        self._sesion.delete(elemento)
+        sucursal_a_eliminar = self.obtener_uno(_id)
+        self._sesion.delete(sucursal_a_eliminar)
 
 sucursal = SucursalServicio()

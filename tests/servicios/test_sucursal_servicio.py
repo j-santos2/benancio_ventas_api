@@ -5,7 +5,7 @@ import unittest
 from conexion import conexion
 from src.modelos import SucursalModelo, VendedorModelo
 from src.servicios import sucursal
-from src.servicios.exceptions import ErrorDeIntegridad
+from src.servicios.exceptions import ErrorDeIntegridad, ObjetoNoEncontrado
 
 
 class Test_SucursalServicio(unittest.TestCase):
@@ -30,6 +30,13 @@ class Test_SucursalServicio(unittest.TestCase):
         resultado = sucursal.obtener_uno(1)
         self.assertTrue(isinstance(resultado.id, int))
         self.assertTrue(isinstance(resultado.nombre, str))
+
+    def test_sucursal_obtener_uno_con_id_inexistente_levanta_error(self):
+        
+        with self.assertRaises(ObjetoNoEncontrado) as cm:
+            sucursal.obtener_uno(-1)
+
+        self.assertEqual("Entidad con id -1 no existe", str(cm.exception))
 
     def test_sucursal_insertar_nombre_ultima_sucursal_tiene_este_valor(self):
         nombre_rnd = ''.join(choices(string.ascii_lowercase, k=5))
@@ -65,7 +72,7 @@ class Test_SucursalServicio(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             sucursal.eliminar(-1)
 
-        self.assertEqual("Sucursal con id -1 no existe", str(cm.exception))
+        self.assertEqual("Entidad con id -1 no existe", str(cm.exception))
 
     def test_eliminar_sucursal_con_vendedores_atrapa_excepcion_y_rollback(self):
         sucursal_dot = SucursalModelo(nombre="Dot")
