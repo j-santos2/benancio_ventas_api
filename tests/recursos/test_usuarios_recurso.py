@@ -46,6 +46,6 @@ class Test_UsuarioRecurso(unittest.TestCase):
         response = self.__app.post("/usuarios/login",json = {"nombre": "Pepito", "clave":"dificil123"})
         response_json = json.loads(response.data.decode("utf-8"))
         
-        self.assertEqual({"Mensaje":"Nombre de usuario y/o clave incorrecta"}, response_json)
+        self.assertEqual({"msg":"Nombre de usuario y/o clave incorrecta"}, response_json)
         self.assertEqual(401, response.status_code)
         m_usuario.login.assert_called_with("Pepito", "dificil123")

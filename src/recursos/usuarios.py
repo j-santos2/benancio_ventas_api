@@ -21,4 +21,4 @@ class UsuarioLogin(Resource):
             access_token = create_access_token(identity = api.payload["nombre"])
             return {"token":access_token}, 201
         else:
-            return {"Mensaje":"Nombre de usuario y/o clave incorrecta"}, 401
+            return {"msg":"Nombre de usuario y/o clave incorrecta"}, 401
