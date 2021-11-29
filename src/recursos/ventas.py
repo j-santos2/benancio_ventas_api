@@ -1,3 +1,5 @@
+from flask_jwt_extended import jwt_required
+
 from flask_restx import Resource, fields
 from ..servicios import venta
 from src import api
@@ -16,6 +18,7 @@ class Ventas(Resource):
 
     @api.expect(venta_model)
     @api.marshal_with(venta_model, code=201)
+    @jwt_required()
     def post(self):
         respuesta = venta.insertar(api.payload['producto_id'], api.payload['vendedor_id'])
         return respuesta, 201

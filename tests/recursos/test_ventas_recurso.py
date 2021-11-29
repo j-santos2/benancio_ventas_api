@@ -1,8 +1,12 @@
 import json
 import unittest
+
+from flask_jwt_extended import create_access_token
+
 from app import app
 from src.modelos import VentaModelo, SucursalModelo, VendedorModelo, ProductoModelo
 from conexion import conexion
+
 
 class Test_RecursoVenta(unittest.TestCase):
 
@@ -35,6 +39,13 @@ class Test_RecursoVenta(unittest.TestCase):
         conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=segundo_vendedor.id))
         conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
         conexion.sesion.add(VentaModelo(producto_id=primer_producto.id, vendedor_id=segundo_vendedor.id))
+
+        with self.app.application.app_context():
+            self.__access_token = create_access_token('testuser')
+
+        self.__headers = {
+            'Authorization': f'Bearer {self.__access_token}'
+        }
 
     def tearDown(self):
         conexion.sesion.query(VendedorModelo).delete()
@@ -92,7 +103,7 @@ class Test_RecursoVenta(unittest.TestCase):
         conexion.sesion.commit()
 
         nueva_venta = dict(vendedor_id=nuevo_vendedor.id, producto_id=nuevo_producto.id)
-        response = self.app.post('/ventas', json=nueva_venta)
+        response = self.app.post('/ventas', json=nueva_venta, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertIsNotNone(response_json["id"])
