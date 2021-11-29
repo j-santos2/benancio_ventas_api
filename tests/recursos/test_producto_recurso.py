@@ -101,7 +101,7 @@ class Test_RecursoProducto(unittest.TestCase):
         response = self.app.put('/productos/9000', json=producto_datos_actualizados)
         response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual("Producto con id 9000 no existe", response_json["msg"])
+        self.assertEqual("Entidad con id 9000 no existe", response_json["msg"])
 
     def test_endpoint_productos_delete_id_retorna_mensaje_producto_id_2_eliminado_con_exito(self):
         nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
