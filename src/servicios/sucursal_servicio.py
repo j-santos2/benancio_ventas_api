@@ -8,10 +8,7 @@ class SucursalServicio(RecursoServicio):
         return self._sesion.query(SucursalModelo).all()
 
     def obtener_uno (self, _id):
-        sucursal_a_obtener = self._sesion.query(SucursalModelo).filter(SucursalModelo.id == _id).first()
-        if sucursal_a_obtener == None:
-            raise ObjetoNoEncontrado(f"Sucursal con id {_id} no existe")
-        return sucursal_a_obtener
+        return self._get_or_fail(SucursalModelo, _id)
 
     @commit_after
     def insertar(self, nombre):
