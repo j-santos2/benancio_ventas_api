@@ -1,4 +1,5 @@
 import os
+os.environ['JWT_SECRET_KEY'] = "Clave secreta"
 os.environ["DATABASE_ENV"] = "sqlite:////tmp/benancio_ventas_api.db"
 if os.path.exists("/tmp/benancio_ventas_api.db"):
     os.remove("/tmp/benancio_ventas_api.db")
