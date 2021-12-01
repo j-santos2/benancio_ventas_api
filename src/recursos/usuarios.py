@@ -3,22 +3,22 @@ from flask_restx import Resource, fields
 from ..servicios import usuario
 from src import api
 
-usuario_model = api.model('Usuario', {
+usuario_model = api.model('Users', {
     'id': fields.Integer,
-    'nombre': fields.String
+    'name': fields.String(attribute='nombre')
 })
 
 class Usuarios(Resource):
     @api.marshal_with(usuario_model, code = 201)
     def post(self):
-        respuesta = usuario.insertar(api.payload["nombre"], api.payload["clave"])
+        respuesta = usuario.insertar(api.payload["name"], api.payload["password"])
         
         return respuesta, 201
 
 class UsuarioLogin(Resource):
     def post(self):
-        if usuario.login(api.payload["nombre"], api.payload["clave"]):
-            access_token = create_access_token(identity = api.payload["nombre"])
+        if usuario.login(api.payload["name"], api.payload["password"]):
+            access_token = create_access_token(identity = api.payload["name"])
             return {"token":access_token}, 201
         else:
-            return {"msg":"Nombre de usuario y/o clave incorrecta"}, 401
+            return {"msg":"Username and/or password is incorrect"}, 401
