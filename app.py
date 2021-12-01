@@ -14,8 +14,8 @@ api.add_resource(Sucursales, '/stores', endpoint = 'sucursales_ep')
 api.add_resource(Sucursal, '/stores/<int:id>', endpoint = 'sucursal_ep')
 api.add_resource(SucursalConVendedores, '/stores/<int:id>/salesperson', endpoint = 'sucursal_vendedores_ep')
 
-api.add_resource(Ventas, '/ventas', endpoint = 'ventas_ep')
-api.add_resource(Venta, '/ventas/<int:id>', endpoint = 'venta_ep')
+api.add_resource(Ventas, '/sales', endpoint = 'ventas_ep')
+api.add_resource(Venta, '/sales/<int:id>', endpoint = 'venta_ep')
 
 api.add_resource(Usuarios,'/usuarios', endpoint = 'usuarios_ep')
 api.add_resource(UsuarioLogin, '/usuarios/login', endpoint = 'usuario_login_ep')

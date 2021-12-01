@@ -54,14 +54,14 @@ class Test_RecursoVenta(unittest.TestCase):
         conexion.sesion.query(VentaModelo).delete()
 
     def test_endpoint_ventas_retorna_json_con_ventas(self):
-        response = self.app.get("/ventas")
+        response = self.app.get("/sales")
 
         response_json = json.loads(response.data.decode("utf-8"))
         primera_venta = response_json[0]
 
         self.assertTrue("id" in primera_venta)
-        self.assertTrue("producto_id" in primera_venta)
-        self.assertTrue("vendedor_id" in primera_venta)
+        self.assertTrue("product_id" in primera_venta)
+        self.assertTrue("salesperson_id" in primera_venta)
         self.assertTrue("uri" in primera_venta)
         self.assertEqual(200, response.status_code)
 
@@ -80,14 +80,14 @@ class Test_RecursoVenta(unittest.TestCase):
         conexion.sesion.add(nueva_venta)
         conexion.sesion.commit()   
 
-        uri_nueva_venta= f"/ventas/{nueva_venta.id}"
+        uri_nueva_venta= f"/sales/{nueva_venta.id}"
         response = self.app.get(uri_nueva_venta)
         
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual(nueva_venta.id, response_json["id"])
-        self.assertEqual(nueva_venta.producto_id, response_json["producto_id"])
-        self.assertEqual(nueva_venta.vendedor_id, response_json["vendedor_id"])
+        self.assertEqual(nueva_venta.producto_id, response_json["product_id"])
+        self.assertEqual(nueva_venta.vendedor_id, response_json["salesperson_id"])
         self.assertEqual(uri_nueva_venta, response_json["uri"])        
         self.assertEqual(200, response.status_code)
 
@@ -102,11 +102,11 @@ class Test_RecursoVenta(unittest.TestCase):
         conexion.sesion.add(nuevo_producto)         
         conexion.sesion.commit()
 
-        nueva_venta = dict(vendedor_id=nuevo_vendedor.id, producto_id=nuevo_producto.id)
-        response = self.app.post('/ventas', json=nueva_venta, headers=self.__headers)
+        nueva_venta = dict(salesperson_id=nuevo_vendedor.id, product_id=nuevo_producto.id)
+        response = self.app.post('/sales', json=nueva_venta, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertIsNotNone(response_json["id"])
-        self.assertEqual(nueva_venta["producto_id"], response_json["producto_id"])
-        self.assertEqual(nueva_venta['vendedor_id'], response_json["vendedor_id"])
+        self.assertEqual(nueva_venta["product_id"], response_json["product_id"])
+        self.assertEqual(nueva_venta['salesperson_id'], response_json["salesperson_id"])
         self.assertEqual(201, response.status_code)

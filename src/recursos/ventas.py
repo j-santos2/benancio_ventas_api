@@ -5,10 +5,10 @@ from ..servicios import venta
 from src import api
 
 
-venta_model = api.model('Venta', {
+venta_model = api.model('Sales', {
     'id': fields.Integer(readonly=True),
-    'producto_id': fields.Integer,
-    'vendedor_id': fields.Integer,
+    'product_id': fields.Integer(attribute='producto_id'),
+    'salesperson_id': fields.Integer(attribute='vendedor_id'),
     'uri': fields.Url('venta_ep', readonly=True)
 })
 class Ventas(Resource):
@@ -20,7 +20,7 @@ class Ventas(Resource):
     @api.marshal_with(venta_model, code=201)
     @jwt_required()
     def post(self):
-        respuesta = venta.insertar(api.payload['producto_id'], api.payload['vendedor_id'])
+        respuesta = venta.insertar(api.payload['product_id'], api.payload['salesperson_id'])
         return respuesta, 201
 
 class Venta(Resource):
