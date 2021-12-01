@@ -3,8 +3,8 @@ import src.recursos.error_handlers
 from src.recursos import Productos, Producto, Vendedores, Vendedor, VendedorConVentas, Sucursales, Sucursal, SucursalConVendedores, Ventas, Venta, Usuarios, UsuarioLogin
 
 
-api.add_resource(Productos, '/productos', endpoint = 'productos_ep')
-api.add_resource(Producto, '/productos/<int:id>', endpoint = 'producto_ep')
+api.add_resource(Productos, '/products', endpoint = 'productos_ep')
+api.add_resource(Producto, '/products/<int:id>', endpoint = 'producto_ep')
 
 api.add_resource(Vendedores, '/vendedores', endpoint = 'vendedores_ep')
 api.add_resource(Vendedor, '/vendedores/<int:id>', endpoint = 'vendedor_ep')

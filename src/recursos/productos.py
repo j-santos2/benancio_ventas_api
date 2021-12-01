@@ -4,10 +4,10 @@ from ..servicios import producto
 from src import api
 
 
-producto_model = api.model('Producto', {
-    'id': fields.Integer(readonly=True, description='El identificador único del producto'),
-    'nombre': fields.String,
-    'precio': fields.Integer,
+producto_model = api.model('Product', {
+    'id': fields.Integer(readonly=True, description='Product ID'),
+    'name': fields.String(attribute='nombre'),
+    'price': fields.Integer(attribute='precio'),
     'uri': fields.Url('producto_ep', readonly=True)
 })
 
@@ -20,7 +20,7 @@ class Productos(Resource):
     @api.marshal_with(producto_model, code=201)
     @jwt_required()
     def post(self):
-        respuesta = producto.insertar(api.payload['nombre'], api.payload['precio'])
+        respuesta = producto.insertar(api.payload['name'], api.payload['price'])
         return respuesta, 201
 
 class Producto(Resource):
@@ -32,7 +32,7 @@ class Producto(Resource):
     @api.marshal_with(producto_model, code=200)
     @jwt_required()
     def put(self, id):
-        respuesta = producto.actualizar(id, api.payload['nombre'], api.payload['precio'])
+        respuesta = producto.actualizar(id, api.payload['name'], api.payload['price'])
         return respuesta, 200
 
     @jwt_required()
