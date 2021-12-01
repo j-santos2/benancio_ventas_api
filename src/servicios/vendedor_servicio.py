@@ -1,4 +1,3 @@
-from src.servicios.exceptions import ObjetoNoEncontrado
 from .recurso_servicio import RecursoServicio
 from .decorators_servicios import commit_after
 from ..modelos import VendedorModelo

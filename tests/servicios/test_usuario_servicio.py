@@ -1,13 +1,13 @@
 import unittest
-from flask_jwt_extended import create_access_token
+
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from conexion import conexion
 from src.modelos import UsuarioModelo
 from src.servicios import usuario
-from src.servicios.usuario_servicio import UsuarioServicio
 
 
-class Test_UsuarioServicio(unittest.TestCase):
+class TestUsuarioServicio(unittest.TestCase):
 
     def tearDown(self):
         conexion.sesion.query(UsuarioModelo).delete()

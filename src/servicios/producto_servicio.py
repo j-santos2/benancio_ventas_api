@@ -1,14 +1,9 @@
-from src.servicios.exceptions import ObjetoNoEncontrado
 from .recurso_servicio import RecursoServicio
 from .decorators_servicios import commit_after
 from ..modelos import ProductoModelo
-from dataclasses import dataclass 
 
-@dataclass
+
 class ProductoServicio(RecursoServicio):
-    id: int = None
-    nombre: str = None
-    precio: int = None
     
     def obtener_todos(self):
         return self._sesion.query(ProductoModelo).all()

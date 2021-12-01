@@ -1,7 +1,6 @@
 import unittest
 from unittest import mock
 
-from src.modelos import ProductoModelo
 from src.servicios.recurso_servicio import RecursoServicio 
 from src.servicios.exceptions import ObjetoNoEncontrado
 
@@ -9,7 +8,7 @@ from src.servicios.exceptions import ObjetoNoEncontrado
 class Servicio(RecursoServicio):
     pass
 
-class Test_RecursoServicio(unittest.TestCase):
+class TestRecursoServicio(unittest.TestCase):
     def setUp(self):
         self.__servicio = Servicio()        
 

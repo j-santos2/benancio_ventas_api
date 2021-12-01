@@ -1,4 +1,3 @@
-from sqlalchemy.sql.expression import null
 from . import Base
 from sqlalchemy import Column, Integer, String
 

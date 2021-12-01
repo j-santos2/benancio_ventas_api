@@ -4,7 +4,8 @@ from conexion import conexion
 from src.modelos import VentaModelo, ProductoModelo, VendedorModelo, SucursalModelo
 from src.servicios import venta
 
-class Test_VentasServicio(unittest.TestCase):
+
+class TestVentasServicio(unittest.TestCase):
     def setUp(self):
         primera_sucursal = SucursalModelo(nombre = "Primera sucursal")
         segunda_sucursal = SucursalModelo(nombre = "Segunda sucursal")

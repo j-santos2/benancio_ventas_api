@@ -2,15 +2,12 @@ from random import choices, randint
 import string
 import unittest
 
-from sqlalchemy.orm import session
-
 from conexion import conexion
 from src.modelos import ProductoModelo
 from src.servicios import producto
-from src.servicios.exceptions import ObjetoNoEncontrado
 
 
-class Test_ProductoServicio(unittest.TestCase):
+class TestProductoServicio(unittest.TestCase):
 
     def setUp(self):
         conexion.sesion.add(ProductoModelo(nombre="1º producto", precio=10000))

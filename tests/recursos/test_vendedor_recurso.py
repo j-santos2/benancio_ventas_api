@@ -8,7 +8,7 @@ from src.modelos import VendedorModelo, SucursalModelo, ProductoModelo, VentaMod
 from conexion import conexion
 
 
-class Test_RecursoVendedor(unittest.TestCase):
+class TestRecursoVendedor(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         app.config["TESTING"] = True

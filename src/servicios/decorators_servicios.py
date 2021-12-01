@@ -9,7 +9,7 @@ def commit_after(data_function):
         try:
             objeto_nuevo = data_function(*args)
             conexion.sesion.commit()
-        except IntegrityError as e:
+        except IntegrityError:
             conexion.sesion.rollback()
             raise ErrorDeIntegridad
         else:

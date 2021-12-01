@@ -1,15 +1,14 @@
 import json
 import unittest
-from unittest import mock
 
 from flask_jwt_extended import create_access_token
 
 from app import app
 from src.modelos import ProductoModelo
 from conexion import conexion
-from src.servicios.exceptions import ObjetoNoEncontrado
 
-class Test_RecursoProducto(unittest.TestCase):
+
+class TestRecursoProducto(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         app.config["TESTING"] = True

@@ -1,7 +1,7 @@
 from .recurso_servicio import RecursoServicio
 from .decorators_servicios import commit_after
 from ..modelos import SucursalModelo
-from .exceptions import ObjetoNoEncontrado
+
 
 class SucursalServicio(RecursoServicio):
     def obtener_todos(self):

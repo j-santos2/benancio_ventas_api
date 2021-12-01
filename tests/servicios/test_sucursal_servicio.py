@@ -1,4 +1,4 @@
-from random import choices, randint
+from random import choices
 import string
 import unittest
 
@@ -8,7 +8,7 @@ from src.servicios import sucursal
 from src.servicios.exceptions import ErrorDeIntegridad, ObjetoNoEncontrado
 
 
-class Test_SucursalServicio(unittest.TestCase):
+class TestSucursalServicio(unittest.TestCase):
 
     def setUp(self):
         conexion.sesion.add(SucursalModelo(nombre="1ª sucursal"))

@@ -8,7 +8,7 @@ from src.modelos import VentaModelo, SucursalModelo, VendedorModelo, ProductoMod
 from conexion import conexion
 
 
-class Test_RecursoVenta(unittest.TestCase):
+class TestRecursoVenta(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

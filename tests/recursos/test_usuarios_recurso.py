@@ -8,7 +8,7 @@ from src.modelos import UsuarioModelo
 from conexion import conexion
 from werkzeug.security import generate_password_hash
 
-class Test_UsuarioRecurso(unittest.TestCase):
+class TestUsuarioRecurso(unittest.TestCase):
 
     def setUp(self):
         self.__app = app.test_client()

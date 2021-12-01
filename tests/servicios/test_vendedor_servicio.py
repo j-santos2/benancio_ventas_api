@@ -1,15 +1,14 @@
-from random import choices, randint
+from random import choices
 import string
 import unittest
-
-from sqlalchemy import func
 
 from conexion import conexion
 from src.modelos import VendedorModelo, SucursalModelo
 from src.servicios import vendedor
 from src.servicios.exceptions import ObjetoNoEncontrado
 
-class Test_VendedorServicio(unittest.TestCase):
+
+class TestVendedorServicio(unittest.TestCase):
     def setUp(self):
         primera_sucursal = SucursalModelo(nombre = "Primera sucursal")
         conexion.sesion.add(primera_sucursal)
