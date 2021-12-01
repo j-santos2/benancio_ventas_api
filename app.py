@@ -6,9 +6,9 @@ from src.recursos import Productos, Producto, Vendedores, Vendedor, VendedorConV
 api.add_resource(Productos, '/products', endpoint = 'productos_ep')
 api.add_resource(Producto, '/products/<int:id>', endpoint = 'producto_ep')
 
-api.add_resource(Vendedores, '/vendedores', endpoint = 'vendedores_ep')
-api.add_resource(Vendedor, '/vendedores/<int:id>', endpoint = 'vendedor_ep')
-api.add_resource(VendedorConVentas, '/vendedores/<int:id>/ventas', endpoint = 'vendedor_ventas_ep')
+api.add_resource(Vendedores, '/salesperson', endpoint = 'vendedores_ep')
+api.add_resource(Vendedor, '/salesperson/<int:id>', endpoint = 'vendedor_ep')
+api.add_resource(VendedorConVentas, '/salesperson/<int:id>/sales', endpoint = 'vendedor_ventas_ep')
 
 api.add_resource(Sucursales, '/sucursales', endpoint = 'sucursales_ep')
 api.add_resource(Sucursal, '/sucursales/<int:id>', endpoint = 'sucursal_ep')

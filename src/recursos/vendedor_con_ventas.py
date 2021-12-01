@@ -4,9 +4,9 @@ from src import api
 
 venta_con_datos_model = api.model('Venta', {
     'id': fields.Integer,
-    'producto': fields.String(attribute='producto.nombre'),
-    'precio': fields.Integer(attribute='producto.precio'),
-    'vendedor_id': fields.Integer,
+    'product': fields.String(attribute='producto.nombre'),
+    'price': fields.Integer(attribute='producto.precio'),
+    'salesperson_id': fields.Integer(attribute='vendedor_id'),
     'uri': fields.Url('venta_ep')
 })
 

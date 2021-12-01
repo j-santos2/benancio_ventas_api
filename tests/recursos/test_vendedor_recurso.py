@@ -43,15 +43,15 @@ class Test_RecursoVendedor(unittest.TestCase):
 
 
     def test_endpoint_vendedres_retorna_json_con_vendedores(self):
-        response = self.app.get("/vendedores")
+        response = self.app.get("/salesperson")
 
         response_json = json.loads(response.data.decode("utf-8"))
         primer_vendedor = response_json[0]
 
         self.assertTrue("id" in primer_vendedor)
-        self.assertTrue("nombre" in primer_vendedor)
-        self.assertTrue("apellido" in primer_vendedor)
-        self.assertTrue("sucursal_id" in primer_vendedor)
+        self.assertTrue("name" in primer_vendedor)
+        self.assertTrue("lastname" in primer_vendedor)
+        self.assertTrue("store_id" in primer_vendedor)
         self.assertTrue("uri" in primer_vendedor)
         self.assertEqual(200, response.status_code)
 
@@ -65,15 +65,15 @@ class Test_RecursoVendedor(unittest.TestCase):
         conexion.sesion.add(nuevo_vendedor)        
         conexion.sesion.commit()
 
-        uri_nuevo_vendedor = f"/vendedores/{nuevo_vendedor.id}"
+        uri_nuevo_vendedor = f"/salesperson/{nuevo_vendedor.id}"
         response = self.app.get(uri_nuevo_vendedor)
         
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertEqual(nuevo_vendedor.id, response_json["id"])
-        self.assertEqual(nuevo_vendedor.nombre, response_json["nombre"])
-        self.assertEqual(nuevo_vendedor.apellido, response_json["apellido"])
-        self.assertEqual(nuevo_vendedor.sucursal_id, response_json["sucursal_id"])
+        self.assertEqual(nuevo_vendedor.nombre, response_json["name"])
+        self.assertEqual(nuevo_vendedor.apellido, response_json["lastname"])
+        self.assertEqual(nuevo_vendedor.sucursal_id, response_json["store_id"])
         self.assertEqual(uri_nuevo_vendedor, response_json["uri"])        
         self.assertEqual(200, response.status_code)
 
@@ -83,15 +83,15 @@ class Test_RecursoVendedor(unittest.TestCase):
 
         conexion.sesion.commit()
 
-        nuevo_vendedor = dict(nombre='Juan', apellido="Perez", sucursal_id=nueva_sucursal.id)
+        nuevo_vendedor = dict(name='Juan', lastname="Perez", store_id=nueva_sucursal.id)
 
-        response = self.app.post('/vendedores', json=nuevo_vendedor, headers=self.__headers)
+        response = self.app.post('/salesperson', json=nuevo_vendedor, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
         self.assertIsNotNone(response_json["id"])
-        self.assertEqual(nuevo_vendedor["nombre"], response_json["nombre"])
-        self.assertEqual(nuevo_vendedor['apellido'], response_json["apellido"])
-        self.assertEqual(nuevo_vendedor['sucursal_id'], response_json["sucursal_id"])
+        self.assertEqual(nuevo_vendedor["name"], response_json["name"])
+        self.assertEqual(nuevo_vendedor['lastname'], response_json["lastname"])
+        self.assertEqual(nuevo_vendedor['store_id'], response_json["store_id"])
         self.assertEqual(201, response.status_code)
 
     def test_endpoint_vendedores_con_ventas_retorna_lista_de_ventas(self):
@@ -114,17 +114,17 @@ class Test_RecursoVendedor(unittest.TestCase):
         conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
         conexion.sesion.add(VentaModelo(producto_id=segundo_producto.id, vendedor_id=primer_vendedor.id))
 
-        response = self.app.get(f'vendedores/{primer_vendedor.id}/ventas')
+        response = self.app.get(f'salesperson/{primer_vendedor.id}/sales')
         respuesta = json.loads(response.data.decode("utf-8"))
 
         for venta in respuesta:
-            self.assertEqual(primer_vendedor.id, venta['vendedor_id'])
+            self.assertEqual(primer_vendedor.id, venta['salesperson_id'])
 
-        self.assertEqual(primer_producto.nombre, respuesta[0]['producto'])
-        self.assertEqual(primer_producto.precio, respuesta[0]['precio'])
+        self.assertEqual(primer_producto.nombre, respuesta[0]['product'])
+        self.assertEqual(primer_producto.precio, respuesta[0]['price'])
 
-        self.assertEqual(segundo_producto.nombre, respuesta[1]['producto'])
-        self.assertEqual(segundo_producto.precio, respuesta[1]['precio'])
+        self.assertEqual(segundo_producto.nombre, respuesta[1]['product'])
+        self.assertEqual(segundo_producto.precio, respuesta[1]['price'])
 
-        self.assertEqual(segundo_producto.nombre, respuesta[2]['producto'])
-        self.assertEqual(segundo_producto.precio, respuesta[2]['precio'])
+        self.assertEqual(segundo_producto.nombre, respuesta[2]['product'])
+        self.assertEqual(segundo_producto.precio, respuesta[2]['price'])
