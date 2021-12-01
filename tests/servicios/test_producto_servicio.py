@@ -79,4 +79,4 @@ class Test_ProductoServicio(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             producto.eliminar(-1)
 
-        self.assertEqual("Entidad con id -1 no existe", str(cm.exception))
+        self.assertEqual("Entity with id -1 not found", str(cm.exception))

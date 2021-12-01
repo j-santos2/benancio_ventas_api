@@ -3,4 +3,4 @@ class ObjetoNoEncontrado(Exception):
 
 class ErrorDeIntegridad(Exception):
     def __str__(self):
-        return "Acción no permitida sobre el recurso."
+        return "Action not allowed on this entity."

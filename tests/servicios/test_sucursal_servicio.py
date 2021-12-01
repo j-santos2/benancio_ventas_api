@@ -36,7 +36,7 @@ class Test_SucursalServicio(unittest.TestCase):
         with self.assertRaises(ObjetoNoEncontrado) as cm:
             sucursal.obtener_uno(-1)
 
-        self.assertEqual("Entidad con id -1 no existe", str(cm.exception))
+        self.assertEqual("Entity with id -1 not found", str(cm.exception))
 
     def test_sucursal_insertar_nombre_ultima_sucursal_tiene_este_valor(self):
         nombre_rnd = ''.join(choices(string.ascii_lowercase, k=5))
@@ -72,7 +72,7 @@ class Test_SucursalServicio(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             sucursal.eliminar(-1)
 
-        self.assertEqual("Entidad con id -1 no existe", str(cm.exception))
+        self.assertEqual("Entity with id -1 not found", str(cm.exception))
 
     def test_eliminar_sucursal_con_vendedores_atrapa_excepcion_y_rollback(self):
         sucursal_dot = SucursalModelo(nombre="Dot")
@@ -83,5 +83,5 @@ class Test_SucursalServicio(unittest.TestCase):
         with self.assertRaises(ErrorDeIntegridad) as cm:
             sucursal.eliminar(sucursal_dot.id)
             
-        self.assertEqual("Acción no permitida sobre el recurso.", str(cm.exception))
+        self.assertEqual("Action not allowed on this entity.", str(cm.exception))
         

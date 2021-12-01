@@ -101,7 +101,7 @@ class Test_RecursoProducto(unittest.TestCase):
         response = self.app.put('/products/9000', json=producto_datos_actualizados, headers=self.__headers)
         response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual("Entidad con id 9000 no existe", response_json["msg"])
+        self.assertEqual("Entity with id 9000 not found", response_json["msg"])
 
     def test_endpoint_productos_delete_id_retorna_mensaje_producto_id_2_eliminado_con_exito(self):
         nuevo_producto = ProductoModelo(nombre="Nuevo producto", precio=23430)
@@ -116,12 +116,12 @@ class Test_RecursoProducto(unittest.TestCase):
         response = self.app.delete('/products/9000', headers=self.__headers)
         respuesta = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"msg":"Entidad con id 9000 no existe"}, respuesta)
+        self.assertEqual({"msg":"Entity with id 9000 not found"}, respuesta)
         self.assertEqual(400, response.status_code)
 
     def test_endpoint_productos_delete_sin_token_devuelve_missing_authorization_y_status_401(self):
         response = self.app.delete('/products/9000')
         respuesta = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"msg":"Falta el token de autorización"}, respuesta)
+        self.assertEqual({"msg":"Missing athorization header"}, respuesta)
         self.assertEqual(401, response.status_code)

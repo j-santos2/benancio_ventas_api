@@ -64,7 +64,7 @@ class Test_RecursoSucursales(unittest.TestCase):
         response = self.app.get("/stores/9999")
         response_json = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"msg": "Entidad con id 9999 no existe"}, response_json)
+        self.assertEqual({"msg": "Entity with id 9999 not found"}, response_json)
         self.assertEqual(400, response.status_code)
 
     def test_endpoint_sucursales_post_sucursales_con_nombre_retorna_json_con_sucursal(self):
@@ -108,7 +108,7 @@ class Test_RecursoSucursales(unittest.TestCase):
 
         respuesta = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"msg":"Entidad con id 9000 no existe"}, respuesta)
+        self.assertEqual({"msg":"Entity with id 9000 not found"}, respuesta)
         self.assertEqual(400, response.status_code)
 
     def test_endpoint_sucursales_con_vendedores_retorna_vendedores_de_cada_sucursal(self):

@@ -15,7 +15,7 @@ def handle_error_de_integridad(e):
 
 @api.errorhandler(NoAuthorizationError)
 def handle_error_no_autorizado(e):
-    return {"msg":"Falta el token de autorización"}, 401
+    return {"msg":"Missing athorization header"}, 401
 
 @api.errorhandler(CSRFError)
 def handle_auth_error(e):
@@ -23,28 +23,28 @@ def handle_auth_error(e):
 
 @api.errorhandler(ExpiredSignatureError)
 def handle_expired_error(e):
-    return {"msg": "El token ha expirado"}, 401
+    return {"msg": "Expired token"}, 401
 
 @api.errorhandler(InvalidHeaderError)
 def handle_invalid_header_error(e):
-    return {"msg": "El header es inválido"}, 422
+    return {"msg": "Invalid header"}, 422
 
 @api.errorhandler(InvalidTokenError)
 def handle_invalid_token_error(e):
-    return {"msg": "El token es inválido"}, 422
+    return {"msg": "Invalid token"}, 422
 
 @api.errorhandler(JWTDecodeError)
 def handle_jwt_decode_error(e):
-    return {"msg": "No se pudo decodificar el token"}, 422
+    return {"msg": "Token decode error"}, 422
 
 @api.errorhandler(WrongTokenError)
 def handle_wrong_token_error(e):
-    return {"msg": "El token es inválido"}, 422
+    return {"msg": "Wrong token"}, 422
 
 @api.errorhandler(RevokedTokenError)
 def handle_revoked_token_error(e):
-    return {"msg": "Se revocó el token"}, 401
+    return {"msg": "Token revoked"}, 401
 
 @api.errorhandler(FreshTokenRequired)
 def handle_fresh_token_required(e):
-    return {"msg": "Se requiere un token nuevo"}, 401
+    return {"msg": "Fresh token required"}, 401
