@@ -124,3 +124,25 @@ class TestRecursoProducto(unittest.TestCase):
 
         self.assertEqual({"msg":"Missing athorization header"}, respuesta)
         self.assertEqual(401, response.status_code)
+
+    def test_endpoint_productos_get_con_limite_2_retorna_los_dos_primeros(self):
+        response = self.app.get("/products?limit=2")
+        respuesta = json.loads(response.data.decode("utf-8"))
+
+        self.assertEqual(2, len(respuesta))
+        self.assertEqual("1º producto", respuesta[0]["name"])
+        self.assertEqual(10000, respuesta[0]["price"])
+        self.assertEqual("2º producto", respuesta[1]["name"])
+        self.assertEqual(20000, respuesta[1]["price"])
+        self.assertEqual(200, response.status_code)
+
+    def test_endpoint_productos_get_con_limite_2_y_offset_2_retorna_registros_correctos(self):
+        response = self.app.get("/products?limit=2&offset=2")
+        respuesta = json.loads(response.data.decode("utf-8"))
+
+        self.assertEqual(2, len(respuesta))
+        self.assertEqual("3º producto", respuesta[0]["name"])
+        self.assertEqual(30000, respuesta[0]["price"])
+        self.assertEqual("4º producto", respuesta[1]["name"])
+        self.assertEqual(40000, respuesta[1]["price"])
+        self.assertEqual(200, response.status_code)

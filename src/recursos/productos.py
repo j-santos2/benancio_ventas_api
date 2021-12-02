@@ -1,3 +1,4 @@
+from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restx import Resource, fields
 from ..servicios import producto
@@ -14,7 +15,9 @@ producto_model = api.model('Product', {
 class Productos(Resource):
     @api.marshal_with(producto_model)
     def get(self):
-        return producto.obtener_todos()
+        limit = request.args.get("limit", 100, type=int)
+        offset = request.args.get("offset", 0, type=int)
+        return producto.obtener_todos_paginado(limit, offset)
 
     @api.expect(producto_model)
     @api.marshal_with(producto_model, code=201)
