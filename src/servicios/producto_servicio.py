@@ -8,6 +8,9 @@ class ProductoServicio(RecursoServicio):
     def obtener_todos(self):
         return self._sesion.query(ProductoModelo).all()
 
+    def obtener_todos_paginado(self, limite, inicio=0):
+        return self._sesion.query(ProductoModelo).slice(inicio, inicio+limite).all()
+
     def obtener_uno (self, _id):
         return self._get_or_fail(ProductoModelo, _id)
 

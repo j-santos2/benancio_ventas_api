@@ -77,3 +77,22 @@ class TestProductoServicio(unittest.TestCase):
             producto.eliminar(-1)
 
         self.assertEqual("Entity with id -1 not found", str(cm.exception))
+
+    def test_obtener_todos_paginado_retorna_los_primeros_2_registros(self):
+        respuesta = producto.obtener_todos_paginado(2)
+
+        self.assertEqual(2, len(respuesta))
+        self.assertTrue("1º producto", respuesta[0].nombre)
+        self.assertTrue(10000, respuesta[0].precio)
+        self.assertTrue("2º producto", respuesta[1].nombre)
+        self.assertTrue(20000, respuesta[1].precio)
+
+    def test_obtener_todos_paginado_con_inicio_2_limite_2_retorna_registros_correctos(self):
+        respuesta = producto.obtener_todos_paginado(2, 2)
+
+        self.assertEqual(2, len(respuesta))
+        self.assertTrue("3º producto", respuesta[0].nombre)
+        self.assertTrue(30000, respuesta[0].precio)
+        self.assertTrue("4º producto", respuesta[1].nombre)
+        self.assertTrue(40000, respuesta[1].precio)
+        
