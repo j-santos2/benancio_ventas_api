@@ -82,17 +82,17 @@ class TestProductoServicio(unittest.TestCase):
         respuesta = producto.obtener_todos_paginado(2)
 
         self.assertEqual(2, len(respuesta))
-        self.assertTrue("1º producto", respuesta[0].nombre)
-        self.assertTrue(10000, respuesta[0].precio)
-        self.assertTrue("2º producto", respuesta[1].nombre)
-        self.assertTrue(20000, respuesta[1].precio)
+        self.assertEqual("1º producto", respuesta[0].nombre)
+        self.assertEqual(10000, respuesta[0].precio)
+        self.assertEqual("2º producto", respuesta[1].nombre)
+        self.assertEqual(20000, respuesta[1].precio)
 
     def test_obtener_todos_paginado_con_inicio_2_limite_2_retorna_registros_correctos(self):
         respuesta = producto.obtener_todos_paginado(2, 2)
 
         self.assertEqual(2, len(respuesta))
-        self.assertTrue("3º producto", respuesta[0].nombre)
-        self.assertTrue(30000, respuesta[0].precio)
-        self.assertTrue("4º producto", respuesta[1].nombre)
-        self.assertTrue(40000, respuesta[1].precio)
+        self.assertEqual("3º producto", respuesta[0].nombre)
+        self.assertEqual(30000, respuesta[0].precio)
+        self.assertEqual("4º producto", respuesta[1].nombre)
+        self.assertEqual(40000, respuesta[1].precio)
         
