@@ -122,7 +122,7 @@ class TestRecursoProducto(unittest.TestCase):
         response = self.app.delete('/products/9000')
         respuesta = json.loads(response.data.decode("utf-8"))
 
-        self.assertEqual({"msg":"Missing athorization header"}, respuesta)
+        self.assertEqual({"msg":"Missing authorization header"}, respuesta)
         self.assertEqual(401, response.status_code)
 
     def test_endpoint_productos_get_con_limite_2_retorna_los_dos_primeros(self):

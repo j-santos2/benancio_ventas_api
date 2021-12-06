@@ -15,7 +15,7 @@ def handle_error_de_integridad(e):
 
 @api.errorhandler(NoAuthorizationError)
 def handle_error_no_autorizado(e):
-    return {"msg":"Missing athorization header"}, 401
+    return {"msg":"Missing authorization header"}, 401
 
 @api.errorhandler(CSRFError)
 def handle_auth_error(e):
